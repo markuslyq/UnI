@@ -1,6 +1,6 @@
 import firebase from './firebase';
 
-const auth = firebase.auth();
+export const auth = firebase.auth();
 
 export const signIn = async ({ email, password }, onSuccess, onError) => {
     try {
@@ -15,9 +15,10 @@ export const signIn = async ({ email, password }, onSuccess, onError) => {
     }
 }
 
-export const createAccount = async ({ email, password }, onSuccess, onError) => {
+export const createAccount = async ({ email, password , name}, onSuccess, onError) => {
     try {
         const { user } = await auth.createUserWithEmailAndPassword(email, password);
+        user.updateProfile({displayName: name})
         if (user) {
             await user.sendEmailVerification();
             return onSuccess(user);

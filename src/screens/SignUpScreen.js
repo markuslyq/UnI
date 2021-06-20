@@ -7,9 +7,11 @@ import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import BackBtn from '../components/BackBtn';
 
 import * as Authentication from "../../api/auth";
+import * as Database from "../../api/firestore";
 
 const SignUpScreen = ({ navigation }) => {
 
+    const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -18,6 +20,20 @@ const SignUpScreen = ({ navigation }) => {
         isValidPassWord: true,
         confirmPasswordMatch: true,
     });
+    const [isSignUpLoading, setSignUpLoading] = React.useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
+
+
+    const docData = {
+        Name: name,
+        FirstTimeLogin: true,
+        Gender: '',
+        Major: '',
+        Modules: '',
+        CCAs: '',
+        Interest: ''
+    }
 
     const handleValidEmail = (val) => {
         if ((val.toString().slice(-10) != '@u.nus.edu') || (val.toString().length <= 10)) {
@@ -66,15 +82,20 @@ const SignUpScreen = ({ navigation }) => {
 
         if (data.confirmPasswordMatch && data.isValidEmail && data.isValidPassWord) {
             Authentication.createAccount(
-                { email, password },
-                (user) => { navigation.navigate('Email Verification'), {user} },
+                { email, password, name},
+                (user) => { 
+                    Database.add(email, "Information", docData, false);
+                    navigation.navigate('Email Verification');
+                    console.log("Go to Email Verification Screen");
+                },
                 (error) => {
                     if (error == 'auth/email-already-in-use') {
                         Alert.alert("Sign Up Error", "Email is already in use.")
                     } else if (error == 'auth/weak-password') {
                         Alert.alert("Weak Password", "Please use a stronger password.")
                     } else {
-                        Alert.alert("Sign Up Error", "Please try again later.")
+                        Alert.alert("Sign Up Error", "Please try again later.");
+                        console.log(error);
                     }
                 }
 
@@ -112,6 +133,16 @@ const SignUpScreen = ({ navigation }) => {
 
                         <View style={styles.inputContainer}>
 
+                            {/* Name Input */}
+                            <TextInput
+                                style={styles.input}
+                                mode="outlined"
+                                theme={{ colors: { primary: '#FD9E0F', underlineColor: 'transparent', } }}
+                                label="Name"
+                                placeholder="Enter your name"
+                                value={name}
+                                onChangeText={name => setName(name)} />
+
                             {/* Email Input */}
                             <TextInput
                                 style={styles.input}
@@ -120,7 +151,7 @@ const SignUpScreen = ({ navigation }) => {
                                 label="Email"
                                 placeholder="Enter your email"
                                 value={email}
-                                onChangeText={email => setEmail(email)}
+                                onChangeText={email => setEmail(email.toLocaleLowerCase())}
                                 onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)} />
                             {data.isValidEmail ? null :
                                 <Animated.View animation="fadeInLeft" duration={500}>
@@ -135,7 +166,8 @@ const SignUpScreen = ({ navigation }) => {
                                 theme={{ colors: { primary: '#FD9E0F', underlineColor: 'transparent', } }}
                                 label="Password"
                                 placeholder="Enter your password"
-                                secureTextEntry={true}
+                                right={<TextInput.Icon name={isPasswordVisible ? "eye-off" : "eye"} onPress={() => setIsPasswordVisible((state) => !state)} />}
+                                secureTextEntry={!isPasswordVisible}
                                 value={password}
                                 onChangeText={password => setPassword(password)}
                                 onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)} />
@@ -152,7 +184,8 @@ const SignUpScreen = ({ navigation }) => {
                                 theme={{ colors: { primary: '#FD9E0F', underlineColor: 'transparent', } }}
                                 label="Confirm Password"
                                 placeholder="Confirm your password"
-                                secureTextEntry={true}
+                                right={<TextInput.Icon name={isConfirmPasswordVisible ? "eye-off" : "eye"} onPress={() => setIsConfirmPasswordVisible((state) => !state)} />}
+                                secureTextEntry={!isConfirmPasswordVisible}
                                 value={confirmPassword}
                                 onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
                                 onEndEditing={() => handleConfirmPassword()} />
@@ -168,7 +201,9 @@ const SignUpScreen = ({ navigation }) => {
                                 mode="contained"
                                 color="#FD9E0F"
                                 uppercase={false}
-                                onPress={signUpPress}>
+                                onPress={signUpPress}
+                                loading={isSignUpLoading}
+                                disabled={isSignUpLoading}>
                                 Sign Up
                             </Button>
 
@@ -195,7 +230,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     inputContainer: {
-        marginTop: 40,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -229,7 +263,8 @@ const styles = StyleSheet.create({
         color: 'red',
     },
     signUpButton: {
-        marginTop: 50,
+        borderRadius: 20,
+        marginTop: 30,
         marginBottom: 10,
         width: 300,
         height: 50,

@@ -4,16 +4,20 @@ import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-n
 
 import { Button } from 'react-native-paper';
 
-const HomeScreen = ({ navigation }) => {
+import * as Authentication from "../../api/auth";
 
-    const signUpPress = () => {
-        navigation.navigate('SignUp');
-        console.log("Go to Sign Up Screen");
+const FirstTimeLoginScreen = ({ navigation }) => {
+
+    const user = Authentication.auth.currentUser;
+    let name = '';
+    
+    if (user != null) {
+        name = user.displayName;
     }
 
-    const logInPress = () => {
-        navigation.navigate('Login');
-        console.log("Go to Login Screen");
+    const continuePress = () => {
+        navigation.navigate('Gender');
+        console.log("Go to Gender Screen");
     }
 
     return (
@@ -26,23 +30,18 @@ const HomeScreen = ({ navigation }) => {
                 <View style={styles.bottomContainer}>
 
                     {/* Description */}
-                    <Text style={styles.welcomeText}>Welcome</Text>
-                    <Text style={styles.descriptionText}>Create an account and start{"\n"}making new UNI friends</Text>
+                    <Text style={styles.welcomeText}>Welcome {name},</Text>
+                    <Text style={styles.descriptionText}>Since it’s your first login, we’ll need a{"\n"}self-introduction in order for others to{"\n"}know you better.</Text>
 
                     {/* Getting Started Button */}
-                    <Button style={styles.signUpButton}
-                        labelStyle={styles.signUpButtonText}
+                    <Button style={styles.continueButton}
+                        labelStyle={styles.continueButtonText}
                         mode="contained"
                         color="#FD9E0F"
                         uppercase={false}
-                        onPress={signUpPress}>
-                        Get Started
+                        onPress={continuePress}>
+                        Continue
                     </Button>
-
-                    {/* Login Prompt */}
-                    <Text style={styles.descriptionText}>Already have an account?
-                        <Text style={styles.logInText} onPress={logInPress}>  Log In</Text>
-                    </Text>
 
                 </View>
             </ScrollView>
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         fontFamily: 'Avenir',
         fontWeight: 'bold',
-        fontSize: 40
+        fontSize: 30
     },
     descriptionText: {
         textAlign: 'center',
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
         color: '#858585',
         lineHeight: 23
     },
-    signUpButton: {
+    continueButton: {
         borderRadius: 20,
         marginTop: 100,
         marginBottom: 10,
@@ -92,16 +91,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    signUpButtonText: {
+    continueButtonText: {
         fontFamily: 'Avenir',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'
-    },
-    logInText: {
-        color: '#FD9E0F',
-        fontWeight: 'bold'
     }
 })
-
-export default HomeScreen;
+export default FirstTimeLoginScreen;

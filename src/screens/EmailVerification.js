@@ -35,9 +35,9 @@ const EmailVerificationScreen = ({ route, navigation }) => {
                     <Text style={styles.welcomeText}>Verify your{"\n"}email address</Text>
                     <Text style={styles.descriptionText}>Thank you for signing up but before we get{"\n"}started, a verification link has been sent to{"\n"}your email and we'll need to verify it.</Text>
 
-                    {/* Getting Started Button */}
-                    <Button style={styles.signUpButton}
-                        labelStyle={styles.signUpButtonText}
+                    {/* Login Button */}
+                    <Button style={styles.signInButton}
+                        labelStyle={styles.signInButtonText}
                         mode="contained"
                         color="#FD9E0F"
                         uppercase={false}
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     uniLogo: {
+        marginTop:  50,
         marginLeft: 30,
         width: 300
     },
@@ -91,7 +92,8 @@ const styles = StyleSheet.create({
         color: '#858585',
         lineHeight: 23
     },
-    signUpButton: {
+    signInButton: {
+        borderRadius: 20,
         marginTop: 50,
         marginBottom: 10,
         width: 300,
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    signUpButtonText: {
+    signInButtonText: {
         fontFamily: 'Avenir',
         fontSize: 18,
         color: '#5C5C5C',

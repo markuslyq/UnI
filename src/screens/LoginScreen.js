@@ -2,20 +2,30 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ScrollView, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View, Image, Animated, Keyboard, Alert } from 'react-native';
 
-import * as Authentication from "../../api/auth";
-
 import { Button, TextInput } from 'react-native-paper';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import BackBtn from '../components/BackBtn';
 
-//import { login } from '../controller/registrationController';
+import * as Authentication from "../../api/auth";
+import * as Database from "../../api/firestore";
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [data, setData] = React.useState({
         isValidEmail: true,
-    })
+    });
+    const [isLoginLoading, setIsLoginLoading] = React.useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+
+    // const docData = {
+    //     FirstTimeLogin: false,
+    //     Gender: 'Male',
+    //     Major: 'Computer Engineering',
+    //     Modules: 'CG1112',
+    //     CCAs: 'Handball',
+    //     Interest: 'Handball'
+    // }
 
     const handleValidEmail = (val) => {
         if (val.toString().slice(-10) != '@u.nus.edu') {
@@ -31,20 +41,34 @@ const LoginScreen = ({ navigation }) => {
 
     const LogInPress = () => {
         Keyboard.dismiss();
+        setIsLoginLoading(true);
 
         if (data.isValidEmail) {
             Authentication.signIn(
                 { email, password },
-                (user) => { navigation.navigate('Match') },
+                async (name) => {
+                    const doc = await Database.db.collection(email).doc("Information").get();
+                    console.log(doc.data());
+                    if (doc.data().FirstTimeLogin == true) {
+                        navigation.navigate('First Time Login');
+                        console.log("Go to First Time Login Screen");
+                    } else {
+                        navigation.navigate('Profile');
+                        console.log("Go to Profile Screen");
+                    }
+                },
                 (error) => {
+                    setIsLoginLoading(false);
                     if (error == "Verification Error") {
                         Alert.alert("Login Error", "Please verify your email.");
                     } else if (error == "auth/user-disabled") {
                         Alert.alert("Login Error", "Account has been disabled.");
-                    } else if (error == "auth/too-many-requests"){
+                    } else if (error == "auth/too-many-requests") {
                         Alert.alert("Login Error", "Please try again later.");
-                    } else  {
-                        Alert.alert("Login Error", "Invalid email or password.");
+                    } else {
+                        setIsLoginLoading(false);
+                        Alert.alert("Login Error", "Incorrect email or password");
+                        console.log(error);
                     }
                 }
             )
@@ -84,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
                                 label="Email"
                                 placeholder="Enter your email"
                                 value={email}
-                                onChangeText={email => setEmail(email)}
+                                onChangeText={email => setEmail(email.toLocaleLowerCase())}
                                 onEndEditing={(err) => handleValidEmail(err.nativeEvent.text)} />
                             {data.isValidEmail ? null :
                                 <Animated.View animation="fadeInLeft" duration={500}>
@@ -99,7 +123,8 @@ const LoginScreen = ({ navigation }) => {
                                 theme={{ colors: { primary: '#FD9E0F', underlineColor: 'transparent', } }}
                                 label="Password"
                                 placeholder="Enter your password"
-                                secureTextEntry={true}
+                                right={<TextInput.Icon name={isPasswordVisible ? "eye-off" : "eye"} onPress={() => setIsPasswordVisible((state) => !state)} />}
+                                secureTextEntry={!isPasswordVisible}
                                 value={password}
                                 onChangeText={password => setPassword(password)} />
                             <Text style={styles.forgetPassword}>Forget Password?</Text>
@@ -110,7 +135,9 @@ const LoginScreen = ({ navigation }) => {
                                 mode="contained"
                                 color="#FD9E0F"
                                 uppercase={false}
-                                onPress={LogInPress}>
+                                onPress={LogInPress}
+                                loading={isLoginLoading}
+                                disabled={isLoginLoading}>
                                 Log In
                             </Button>
 
@@ -182,6 +209,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     logInButton: {
+        borderRadius: 20,
         marginTop: 40,
         marginBottom: 10,
         width: 300,

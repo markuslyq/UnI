@@ -10,6 +10,8 @@ import MatchScreen from './src/screens/MatchScreen';
 
 import Navigator from './navigation/RegistrationStack'
 import EmailVerificationScreen from './src/screens/EmailVerification';
+import BirthdayPromptScreen from './src/screens/BirthdayPrompt';
+import GenderScreen from './src/screens/GenderScreen';
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
       {/* <SignUpScreen/> */}
       {/* <MatchScreen /> */}
       {/* <EmailVerificationScreen /> */}
+      {/* <BirthdayPromptScreen /> */}
+      {/* <GenderScreen /> */}
       <Navigator />
       <StatusBar />
     </SafeAreaProvider>
