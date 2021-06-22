@@ -12,6 +12,7 @@ const GenderScreen = ({ navigation }) => {
 
     const [isMaleChecked, setIsMaleChecked] = useState(false);
     const [isFemaleChecked, setIsFemaleChecked] = useState(false);
+    const [isGenderChecked, setIsGenderChecked] = useState(false);
     const [gender, setGender] = useState("Male");
 
     const user = Authentication.auth.currentUser;
@@ -25,12 +26,14 @@ const GenderScreen = ({ navigation }) => {
         setGender("Male");
         setIsMaleChecked(true);
         setIsFemaleChecked(false);
+        setIsGenderChecked(true);
     }
 
     const handleFemalePress = () => {
         setGender("Female");
         setIsFemaleChecked(true);
         setIsMaleChecked(false);
+        setIsGenderChecked(true);
     }
 
     const continuePress = () => {
@@ -109,6 +112,7 @@ const GenderScreen = ({ navigation }) => {
                         mode="contained"
                         color="#FD9E0F"
                         uppercase={false}
+                        disabled={!isGenderChecked}
                         onPress={continuePress}>
                         Continue
                     </Button>

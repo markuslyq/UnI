@@ -4,31 +4,66 @@ import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, Touc
 
 import { Button, TextInput } from 'react-native-paper';
 import BackBtn from '../components/BackBtn';
-import CustomDatePicker from '../components/CustomDatePicker';
+import CustomPicker from '../components/CustomPicker';
 
-import moment from 'moment';
 
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 
-const BirthdayPromptScreen = ({ navigation }) => {
+const MajorScreen = ({ navigation }) => {
 
-    const [birthday, setBirthday] = useState(new Date());
-    const [age, setAge] = useState('');
-    let ageVar = 18;
+    const MajorList = [
+        'Architecture',
+        'Arts & Social Sciences',
+        'Arts & Social Sciences (MT related)',
+        'Arts & Social Sciences (Philosophy, Politics & Economics)',
+        'Biomedical Engineering',
+        'Business Administration',
+        'Business Administration (Accountancy)',
+        'Business Analytics',
+        'Chemical Engineering',
+        'Civil Engineering',
+        'Computer Engineering',
+        'Computer Science Courses',
+        'Data Science and Analytics',
+        'Dentistry',
+        'Electrical Engineering',
+        'Engineering',
+        'Engineering Science',
+        'Environmental Engineering',
+        'Environmental Studies',
+        'Industrial & Systems Engineering',
+        'Industrial Design',
+        'Information Security',
+        'Information Systems',
+        'Landscape Architecture',
+        'Law',
+        'Materials Science & Engineering',
+        'Mechanical Engineering',
+        'Mechanical Engineering (Aeronautical)',
+        'Medicine',
+        'Nursing',
+        'Pharmaceutical Science',
+        'Pharmacy',
+        'Project & Facilities Management',
+        'Real Estate',
+        'Science',
+        'Science (Food Science & Technology)'
+    ];
+
+    const [major, setMajor] = useState('');
 
     const user = Authentication.auth.currentUser;
     let email = user.email;
 
     const docData = {
-        Age: age,
-        Birthday: moment(birthday).format("DD/MM/YYYY")
+        Major: major
     }
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
-        navigation.navigate('Major');
-        console.log("Go to Major Screen");
+        navigation.navigate('CCAs');
+        console.log("Go to CCAs Screen");
     }
 
     return (
@@ -45,37 +80,30 @@ const BirthdayPromptScreen = ({ navigation }) => {
 
                     <View style={styles.bottomContainer}>
                         {/* Description */}
-                        <Text style={styles.headerText}>My birthday is on</Text>
+                        <Text style={styles.headerText}>My major is</Text>
                     </View>
 
                 </View>
 
 
-
                 <View style={styles.inputContainer}>
 
-                    <CustomDatePicker
+                    <CustomPicker
                         textStyle={{
                             flexDirection: 'row',
                             borderRadius: 10,
                             alignItems: 'center',
                             justifyContent: 'flex-start',
-                            paddingHorizontal: 10,
+                            paddingHorizontal: 90,
                             paddingVertical: 12,
                             borderColor: '#949494',
                             borderWidth: 1
                         }}
-                        defaultDate={new Date(moment().subtract(18, 'years'))}
-                        onDateChange={(birthday) => {
-                            console.log('birthday ' + moment(birthday).format('Do MMMM YYYY'));
-                            setBirthday(birthday);
-                            let monthDiff = Date.now() - birthday;
-                            let age_dt = new Date(monthDiff);
-                            let year = age_dt.getUTCFullYear();
-                            ageVar = Math.abs(year - 1970);
-                            setAge(ageVar);
-                            console.log('birthday: ' + birthday);
-                            console.log('age: ' + ageVar);
+                        defaultItem={MajorList[0]}
+                        items={MajorList}
+                        onItemChange={(Major) => {
+                            console.log('Major:  ' + Major);
+                            setMajor(Major);
                         }}
                     />
 
@@ -113,6 +141,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        marginHorizontal: 28
     },
     uniLogo: {
         marginTop: -70,
@@ -163,4 +192,4 @@ const styles = StyleSheet.create({
         fontWeight: 'normal'
     }
 })
-export default BirthdayPromptScreen;
+export default MajorScreen;

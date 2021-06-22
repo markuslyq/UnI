@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, StatusBar } from 'react-native';
 // import { Directions } from 'react-native-gesture-handler';
 
 const BackBtn = (props) => {
@@ -13,6 +13,7 @@ const BackBtn = (props) => {
 
 const styles = StyleSheet.create({
     backButton: {
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         marginTop: 10,
         backgroundColor: 'transparent',
         flexDirection: 'row',

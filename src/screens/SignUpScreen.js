@@ -30,7 +30,6 @@ const SignUpScreen = ({ navigation }) => {
         FirstTimeLogin: true,
         Gender: '',
         Major: '',
-        Modules: '',
         CCAs: '',
         Interest: ''
     }
