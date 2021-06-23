@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableHighlight, View, Platform } from 'react-native';
+import { Modal, StyleSheet, Text, TouchableHighlight, View, Platform, useColorScheme } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,6 +7,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
 
 const CustomDatePicker = (props) => {
+
+    let colorScheme = useColorScheme();
 
     const { textStyle, defaultDate } = props;
     const [date, setDate] = useState(moment(defaultDate));
@@ -41,6 +43,7 @@ const CustomDatePicker = (props) => {
                 value={new Date(date)}
                 mode="date"
                 display="spinner"
+                textColor='black'
                 minimumDate={new Date(moment().subtract(121, 'years').format('YYYY-MM-DD'))}
                 maximumDate={new Date(moment().subtract(18, 'years').format('YYYY-MM-DD'))}
                 onChange={Platform.OS === 'ios' ? onChange : onAndroidChange}

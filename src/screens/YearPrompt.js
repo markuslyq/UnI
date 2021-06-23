@@ -10,60 +10,23 @@ import CustomPicker from '../components/CustomPicker';
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 
-const MajorScreen = ({ navigation }) => {
+const YearPromptScreen = ({ navigation }) => {
 
-    const MajorList = [
-        'Architecture',
-        'Arts & Social Sciences',
-        'Arts & Social Sciences (MT related)',
-        'Arts & Social Sciences (Philosophy, Politics & Economics)',
-        'Biomedical Engineering',
-        'Business Administration',
-        'Business Administration (Accountancy)',
-        'Business Analytics',
-        'Chemical Engineering',
-        'Civil Engineering',
-        'Computer Engineering',
-        'Computer Science Courses',
-        'Data Science and Analytics',
-        'Dentistry',
-        'Electrical Engineering',
-        'Engineering',
-        'Engineering Science',
-        'Environmental Engineering',
-        'Environmental Studies',
-        'Industrial & Systems Engineering',
-        'Industrial Design',
-        'Information Security',
-        'Information Systems',
-        'Landscape Architecture',
-        'Law',
-        'Materials Science & Engineering',
-        'Mechanical Engineering',
-        'Mechanical Engineering (Aeronautical)',
-        'Medicine',
-        'Nursing',
-        'Pharmaceutical Science',
-        'Pharmacy',
-        'Project & Facilities Management',
-        'Real Estate',
-        'Science',
-        'Science (Food Science & Technology)'
-    ];
+    const YearList = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7']
 
-    const [major, setMajor] = useState('');
+    const [year, setYear] = useState();
 
     const user = Authentication.auth.currentUser;
     let email = user.email;
 
     const docData = {
-        Major: major
+        Year: year
     }
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
-        navigation.navigate('Year');
-        console.log("Go to Year Screen");
+        navigation.navigate('CCAs');
+        console.log("Go to CCAs Screen");
     }
 
     return (
@@ -80,7 +43,7 @@ const MajorScreen = ({ navigation }) => {
 
                     <View style={styles.bottomContainer}>
                         {/* Description */}
-                        <Text style={styles.headerText}>My major is</Text>
+                        <Text style={styles.headerText}>I am in </Text>
                     </View>
 
                 </View>
@@ -94,16 +57,23 @@ const MajorScreen = ({ navigation }) => {
                             borderRadius: 10,
                             alignItems: 'center',
                             justifyContent: 'flex-start',
-                            paddingHorizontal: 90,
+                            paddingHorizontal: 80,
                             paddingVertical: 12,
                             borderColor: '#949494',
                             borderWidth: 1
                         }}
-                        defaultItem={MajorList[0]}
-                        items={MajorList}
-                        onItemChange={(Major) => {
-                            console.log('Major:  ' + Major);
-                            setMajor(Major);
+                        defaultItem={YearList[0]}
+                        items={YearList}
+                        onItemChange={(Year) => {
+                            console.log('Year:  ' + Year);
+                            if (Year == 'Year 1') setYear(1);
+                            else if (Year == 'Year 2') setYear(2);
+                            else if (Year == 'Year 3') setYear(3);
+                            else if (Year == 'Year 4') setYear(4);
+                            else if (Year == 'Year 5') setYear(5);
+                            else if (Year == 'Year 6') setYear(6);
+                            else if (Year == 'Year 7') setYear(7);
+                            else setYear(0);
                         }}
                     />
 
@@ -192,4 +162,4 @@ const styles = StyleSheet.create({
         fontWeight: 'normal'
     }
 })
-export default MajorScreen;
+export default YearPromptScreen;

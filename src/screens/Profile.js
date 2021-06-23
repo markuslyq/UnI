@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Button } from 'react-native-paper';
 
 import * as Authentication from "../../api/auth";
 
 const ProfileScreen = ({ navigation }) => {
+
+    const Tab = createBottomTabNavigator();
 
     const signOutPress = () => {
         Authentication.signOut(

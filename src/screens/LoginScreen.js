@@ -18,15 +18,6 @@ const LoginScreen = ({ navigation }) => {
     const [isLoginLoading, setIsLoginLoading] = React.useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
-    // const docData = {
-    //     FirstTimeLogin: false,
-    //     Gender: 'Male',
-    //     Major: 'Computer Engineering',
-    //     Modules: 'CG1112',
-    //     CCAs: 'Handball',
-    //     Interest: 'Handball'
-    // }
-
     const handleValidEmail = (val) => {
         if (val.toString().slice(-10) != '@u.nus.edu') {
             setData({
@@ -53,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
                         navigation.navigate('First Time Login');
                         console.log("Go to First Time Login Screen");
                     } else {
-                        navigation.navigate('Profile');
+                        navigation.navigate('Bottom Tab');
                         console.log("Go to Profile Screen");
                     }
                 },

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 
 import { Button, TextInput, Chip } from 'react-native-paper';
 import BackBtn from '../components/BackBtn';
@@ -406,58 +406,59 @@ const CCAPromptScreen = ({ navigation }) => {
 
             {/* Back Button  */}
             <BackBtn onPress={() => navigation.goBack()} />
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                <ScrollView>
+                    <View style={styles.container}>
+                        {/* Logo */}
+                        <Image source={require('../../assets/images/UnILogo(full).png')}
+                            style={styles.uniLogo} />
 
-            <ScrollView>
-                <View style={styles.container}>
-                    {/* Logo */}
-                    <Image source={require('../../assets/images/UnILogo(full).png')}
-                        style={styles.uniLogo} />
+                        <View style={styles.bottomContainer}>
+                            {/* Description */}
+                            <Text style={styles.headerText}>My CCA(s) is/are</Text>
+                        </View>
 
-                    <View style={styles.bottomContainer}>
-                        {/* Description */}
-                        <Text style={styles.headerText}>My CCA(s) is/are</Text>
                     </View>
 
-                </View>
+                    <MultiSelect
+                        hideTags
+                        items={ccaList}
+                        uniqueKey="name"
+                        onSelectedItemsChange={(selected) => {
+                            setSelectedItems(selected);
+                            setCCAs(selected);
+                            console.log(selected);
+                        }}
+                        selectedItems={selectedItems}
+                        selectText="Select your CCA(s)"
+                        searchInputPlaceholderText="Search Items..."
+                        selectedItemTextColor="#007AFF"
+                        selectedItemIconColor="#007AFF"
+                        itemTextColor="#000"
+                        displayKey="name"
+                        searchInputStyle={{ color: '#8e8e93' }}
+                        submitButtonColor="#FD9E0F"
+                        submitButtonText="Submit"
+                        styleInputGroup={{ paddingVertical: 5 }}
+                        styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
+                        styleMainWrapper={{ marginHorizontal: 40 }}
+                    />
 
-                <MultiSelect
-                    hideTags
-                    items={ccaList}
-                    uniqueKey="name"
-                    onSelectedItemsChange={(selected) => {
-                        setSelectedItems(selected);
-                        setCCAs(selected);
-                        console.log(selected);
-                    }}
-                    selectedItems={selectedItems}
-                    selectText="Select your CCA(s)"
-                    searchInputPlaceholderText="Search Items..."
-                    selectedItemTextColor="#007AFF"
-                    selectedItemIconColor="#007AFF"
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: '#8e8e93' }}
-                    submitButtonColor="#FD9E0F"
-                    submitButtonText="Submit"
-                    styleInputGroup={{ paddingVertical: 5 }}
-                    styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
-                    styleMainWrapper={{ marginHorizontal: 40 }}
-                />
-
-                <View style={styles.inputContainer}>
+                    <View style={styles.inputContainer}>
 
 
-                    {/* Continue Button */}
-                    <Button style={styles.continueButton}
-                        labelStyle={styles.continueButtonText}
-                        mode="contained"
-                        color="#FD9E0F"
-                        uppercase={false}
-                        onPress={continuePress}>
-                        Continue
-                    </Button>
-                </View>
-            </ScrollView>
+                        {/* Continue Button */}
+                        <Button style={styles.continueButton}
+                            labelStyle={styles.continueButtonText}
+                            mode="contained"
+                            color="#FD9E0F"
+                            uppercase={false}
+                            onPress={continuePress}>
+                            Continue
+                        </Button>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView >
     )
 

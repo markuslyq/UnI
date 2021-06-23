@@ -10,10 +10,10 @@ import FirstTimeLoginScreen from '../src/screens/FirstTimeLogin';
 import GenderScreen from '../src/screens/GenderScreen';
 import BirthdayPromptScreen from '../src/screens/BirthdayPrompt';
 import MajorScreen from '../src/screens/MajorPrompt';
+import YearPromptScreen from '../src/screens/YearPrompt';
 import CCAPromptScreen from '../src/screens/CCAPrompt';
 import InterestPromptScreen from '../src/screens/InterestPrompt';
-import ProfileScreen from '../src/screens/Profile';
-import MatchScreen from '../src/screens/MatchScreen';
+import BottomTab from './BottomTabNavigation';
 
 const Stack = createStackNavigator();
 
@@ -33,10 +33,10 @@ function RegNavigator(){
                 <Stack.Screen name="Gender" component={GenderScreen} />
                 <Stack.Screen name="Birthday" component={BirthdayPromptScreen} />
                 <Stack.Screen name="Major" component={MajorScreen} />
+                <Stack.Screen name="Year" component={YearPromptScreen} />
                 <Stack.Screen name="CCAs" component={CCAPromptScreen} />
                 <Stack.Screen name="Interests" component={InterestPromptScreen} />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
-                <Stack.Screen name="Match" component={MatchScreen} />
+                <Stack.Screen name="Bottom Tab" component={BottomTab} />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -61,7 +61,7 @@ const InterestPromptScreen = ({ navigation }) => {
         name: 'Gardening'
     }, {
         id: 16,
-        name: 'Gold'
+        name: 'Golf'
     }, {
         id: 17,
         name: 'Gymming'
@@ -176,12 +176,13 @@ const InterestPromptScreen = ({ navigation }) => {
     let email = user.email;
 
     const docData = {
-        Interest: interests
+        Interest: interests,
+        FirstTimeLogin: false
     }
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
-        navigation.navigate('Profile');
+        navigation.navigate('Bottom Tab');
         console.log("Go to Profile Screen");
     }
 
@@ -224,7 +225,7 @@ const InterestPromptScreen = ({ navigation }) => {
                     submitButtonColor="#FD9E0F"
                     submitButtonText="Submit"
                     styleInputGroup={{ paddingVertical: 5 }}
-                    styleItemsContainer={{ backgroundColor: "#FFFFFF" }}
+                    styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
                     styleMainWrapper={{ marginHorizontal: 40 }}
                 />
 

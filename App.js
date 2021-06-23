@@ -12,6 +12,8 @@ import EmailVerificationScreen from './src/screens/EmailVerification';
 import BirthdayPromptScreen from './src/screens/BirthdayPrompt';
 import GenderScreen from './src/screens/GenderScreen';
 import TestScreen from './src/screens/Test';
+import BottomTab from './navigation/BottomTabNavigation';
+import ProfileScreen from './src/screens/Profile';
 
 import Navigator from './navigation/RegistrationStack'
 
@@ -28,7 +30,9 @@ export default function App() {
       {/* <BirthdayPromptScreen /> */}
       {/* <GenderScreen /> */}
       {/* <TestScreen /> */}
+      {/* <ProfileScreen /> */}
       <Navigator />
+      {/* <BottomTab /> */}
       <StatusBar />
     </SafeAreaProvider>
   );
