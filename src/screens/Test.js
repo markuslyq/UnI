@@ -1,296 +1,172 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight } from 'react-native';
+import React from 'react';
+import { SafeAreaView, StyleSheet, Text, View, Image, Alert, TouchableOpacity } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Button, TextInput, Chip } from 'react-native-paper';
-import BackBtn from '../components/BackBtn';
-import MultiSelect from 'react-native-multiple-select';
+import { Button, Appbar, Avatar, Card } from 'react-native-paper';
 
 import * as Authentication from "../../api/auth";
-import * as Database from "../../api/firestore";
-import Multiselect from 'multiselect-react-dropdown';
 
 const TestScreen = ({ navigation }) => {
 
-    const interestList = [{
-        id: 0,
-        name: 'Badminton'
-    }, {
-        id: 1,
-        name: 'Baseball'
-    }, {
-        id: 2,
-        name: 'Basketball'
-    }, {
-        id: 3,
-        name: 'Callisthenics'
-    }, {
-        id: 4,
-        name: 'Coding'
-    }, {
-        id: 5,
-        name: 'Cooking'
-    }, {
-        id: 6,
-        name: 'Cue Sports'
-    }, {
-        id: 7,
-        name: 'Cycling'
-    }, {
-        id: 8,
-        name: 'Dancing'
-    }, {
-        id: 9,
-        name: 'Drawing'
-    }, {
-        id: 10,
-        name: 'Fishing'
-    }, {
-        id: 11,
-        name: 'Floorball'
-    }, {
-        id: 12,
-        name: 'Food'
-    }, {
-        id: 13,
-        name: 'Football'
-    }, {
-        id: 14,
-        name: 'Frisbee'
-    }, {
-        id: 15,
-        name: 'Gardening'
-    }, {
-        id: 16,
-        name: 'Gold'
-    }, {
-        id: 17,
-        name: 'Gymming'
-    }, {
-        id: 18,
-        name: 'Ice Skating'
-    }, {
-        id: 19,
-        name: 'Inline Skating'
-    }, {
-        id: 20,
-        name: 'Mahjong'
-    }, {
-        id: 21,
-        name: 'Makeup'
-    }, {
-        id: 22,
-        name: 'Martial Arts'
-    }, {
-        id: 23,
-        name: 'Movies'
-    }, {
-        id: 24,
-        name: 'Music'
-    }, {
-        id: 25,
-        name: 'Netlix'
-    }, {
-        id: 26,
-        name: 'Painting'
-    }, {
-        id: 27,
-        name: 'Parkour'
-    }, {
-        id: 28,
-        name: 'Pets'
-    }, {
-        id: 29,
-        name: 'Photography'
-    }, {
-        id: 30,
-        name: 'Poker'
-    }, {
-        id: 31,
-        name: 'Reading'
-    }, {
-        id: 32,
-        name: 'Road Trips'
-    }, {
-        id: 33,
-        name: 'Rock Climbing'
-    }, {
-        id: 34,
-        name: 'Rugby'
-    }, {
-        id: 35,
-        name: 'Running'
-    }, {
-        id: 36,
-        name: 'Scuba Diving'
-    }, {
-        id: 37,
-        name: 'Shopping'
-    }, {
-        id: 38,
-        name: 'Singing'
-    }, {
-        id: 39,
-        name: 'Skateboarding'
-    }, {
-        id: 40,
-        name: 'Socialising'
-    }, {
-        id: 41,
-        name: 'Sports'
-    }, {
-        id: 42,
-        name: 'Studying'
-    }, {
-        id: 43,
-        name: 'Surfing'
-    }, {
-        id: 44,
-        name: 'Swimming'
-    }, {
-        id: 45,
-        name: 'Tennis'
-    }, {
-        id: 46,
-        name: 'Travelling'
-    }, {
-        id: 47,
-        name: 'Video Games'
-    }, {
-        id: 48,
-        name: 'Volleyball'
-    }, {
-        id: 49,
-        name: 'Volunteer Work'
-    }, {
-        id: 50,
-        name: 'Water Sports'
-    }, {
-        id: 51,
-        name: 'Yoga'
-    }];
+    const Tab = createBottomTabNavigator();
 
-    const [interests, setInterests] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
-
-    const continuePress = () => {
-        console.log('selectedItems:' + selectedItems)
+    const signOutPress = () => {
+        Authentication.signOut(
+            () => { navigation.navigate('Home') },
+            (error) => {
+                Alert.alert("Sign Out Error", error);
+            }
+        )
     }
 
+    const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ backgroundColor: '#FD9E0F' }}>
 
-            {/* Back Button  */}
-            <BackBtn onPress={() => navigation.goBack()} />
+            <Appbar.Header style={styles.header}>
+                <Appbar.Content title="Profile" titleStyle={styles.headerText} />
+                <Appbar.Action icon="cog" color="#2e2e2e" onPress={() => console.log("settings pressed")} />
+            </Appbar.Header>
 
-            <ScrollView>
-                <View style={styles.container}>
-                    {/* Logo */}
-                    <Image source={require('../../assets/images/UnILogo(full).png')}
-                        style={styles.uniLogo} />
-
-                    <View style={styles.bottomContainer}>
-                        {/* Description */}
-                        <Text style={styles.headerText}>My interest(s) is/are</Text>
-                    </View>
-
+            <View style={styles.profileDP}>
+                <Avatar.Image
+                    size={70}
+                    source={require('../../assets/images/blankProfilePic.png')}
+                    style={{
+                        marginLeft: 40,
+                        marginRight: 20
+                    }} />
+                <View style={styles.profileDisplay}>
+                    <Text style={styles.helloNameText}>Hello</Text>
+                    <Text style={styles.profileName}>Markus</Text>
                 </View>
+            </View>
 
-                <MultiSelect
-                    hideTags
-                    items={interestList}
-                    uniqueKey="name"
-                    onSelectedItemsChange={(selected) => {
-                        setSelectedItems(selected);
-                        console.log(selected);
-                    }}
-                    selectedItems={selectedItems}
-                    selectText="Select your interest(s)"
-                    searchInputPlaceholderText="Search Items..."
-                    selectedItemTextColor="#007AFF"
-                    selectedItemIconColor="#007AFF"
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: '#CCC' }}
-                    submitButtonColor="#FD9E0F"
-                    submitButtonText="Submit"
-                    styleInputGroup={{ paddingVertical: 5 }}
-                    styleItemsContainer={{ backgroundColor: "#FFFFFF" }}
-                    styleMainWrapper={{ marginHorizontal: 40 }}
-                />
-
-                <View style={styles.inputContainer}>
-
-
-                    {/* Continue Button */}
-                    <Button style={styles.continueButton}
-                        labelStyle={styles.continueButtonText}
+            <View style={styles.container}>
+                <View style={styles.firstLabel}>
+                    <Text style={styles.labelHeader}>Age</Text>
+                    <Text style={styles.labelText}>22</Text>
+                </View>
+                <View style={styles.label}>
+                    <Text style={styles.labelHeader}>Gender</Text>
+                    <Text style={styles.labelText}>22</Text>
+                </View>
+                <View style={styles.label}>
+                    <Text style={styles.labelHeader}>Birthday</Text>
+                    <Text style={styles.labelText}>22</Text>
+                </View>
+                <View style={styles.label}>
+                    <Text style={styles.labelHeader}>Major</Text>
+                    <Text style={styles.labelText}>22</Text>
+                </View>
+                <View style={styles.label}>
+                    <Text style={styles.labelHeader}>CCA(s)</Text>
+                    <Text style={styles.labelText}>22</Text>
+                </View>
+                <View style={styles.label}>
+                    <Text style={styles.labelHeader}>Interest(s)</Text>
+                    <Text style={styles.labelText}>22</Text>
+                </View>
+                <View style={styles.button}>
+                    <Button style={styles.signOutButton}
+                        labelStyle={styles.signOutButtonText}
                         mode="contained"
                         color="#FD9E0F"
                         uppercase={false}
-                        onPress={continuePress}>
-                        Continue
+                        onPress={signOutPress}>
+                        Sign Out
                     </Button>
                 </View>
-            </ScrollView>
-        </SafeAreaView >
+            </View>
+        </SafeAreaView>
     )
 
 }
 
 const styles = StyleSheet.create({
+    header: {
+        backgroundColor: 'transparent'
+    },
+    headerText: {
+        color: '#2e2e2e',
+        fontFamily: 'Avenir',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
     container: {
+        borderTopEndRadius: 30,
+        borderTopStartRadius: 30,
+        marginTop: 50,
+        backgroundColor: '#FFFFFF',
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+    },
+    settingsButton: {
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        marginTop: 10,
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start'
+    },
+    settingsIcon: {
+        marginLeft: 10,
+        width: 30,
+        height: 30
+    },
+    profileDP: {
+        flexDirection: 'row',
+        marginTop: 20
+    },
+    profileDisplay: {
+        flexDirection: 'column'
+    },
+    profileName: {
+        marginTop: 0,
+        fontFamily: 'Montserrat',
+        fontSize: 24,
+        color: '#2e2e2e'
+    },
+    helloNameText: {
+        marginTop: 10,
+        fontFamily: 'MontserratExtraLight',
+        fontSize: 16,
+        fontWeight: '400',
+        color: '#2e2e2e'
+    },
+    firstLabel: {
+        marginTop: 40,
+        marginHorizontal: 30,
+        borderBottomWidth: 1,
+        borderBottomColor: '#cccccc'
+    },
+    label: {
+        marginTop: 20,
+        marginHorizontal: 30,
+        borderBottomWidth: 1,
+        borderBottomColor: '#cccccc'
+    },
+    labelHeader: {
+        marginLeft: 10,
+        fontFamily: 'Montserrat',
+        color: '#adadad',
+        fontSize: 16
+    },
+    labelText: {
+        marginLeft: 10,
+        marginTop: 7,
+        fontFamily: 'MontserratSemiBold',
+        fontSize: 16,
+        color: '#2e2e2e'
+    },
+    button:{
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 100,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
-    bottomContainer: {
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    inputContainer: {
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    uniLogo: {
-        marginTop: -70,
-        marginRight: 13,
-        width: 300
-    },
-    headerText: {
-        marginTop: 0,
-        fontFamily: 'Avenir',
-        fontWeight: 'bold',
-        fontSize: 30,
-        marginBottom: 30
-    },
-    descriptionText: {
-        textAlign: 'center',
-        fontFamily: 'Avenir',
-        fontSize: 16,
-        color: '#858585',
-        lineHeight: 23
-    },
-    date: {
-        flexDirection: 'row',
-        borderRadius: 10,
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        paddingVertical: 12,
-        borderColor: '#949494',
-        borderWidth: 1
-    },
-    input: {
-        width: 320,
-        height: 50,
-        paddingTop: 0,
-    },
-    continueButton: {
-        borderRadius: 20,
+    signOutButton: {
         marginTop: 40,
         marginBottom: 10,
         width: 300,
@@ -298,7 +174,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    continueButtonText: {
+    signOutButtonText: {
+        borderRadius: 20,
         fontFamily: 'Avenir',
         fontSize: 18,
         color: '#5C5C5C',

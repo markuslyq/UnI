@@ -16,6 +16,7 @@ const SignUpScreen = ({ navigation }) => {
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [data, setData] = React.useState({
+        isValidName: true,
         isValidEmail: true,
         isValidPassWord: true,
         confirmPasswordMatch: true,
@@ -24,7 +25,6 @@ const SignUpScreen = ({ navigation }) => {
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
     const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
 
-
     const docData = {
         Name: name,
         FirstTimeLogin: true,
@@ -32,6 +32,22 @@ const SignUpScreen = ({ navigation }) => {
         Major: '',
         CCAs: '',
         Interest: ''
+    }
+
+    let letters = /^[A-Za-z]+$/;
+
+    const handleValidName = (val) => {
+        if ((val.toString().trim() === '') || !((val.toString().match(letters)))) {
+            setData({
+                ...data,
+                isValidName: false
+            });
+        } else {
+            setData({
+                ...data,
+                isValidName: true
+            });
+        }
     }
 
     const handleValidEmail = (val) => {
@@ -81,8 +97,8 @@ const SignUpScreen = ({ navigation }) => {
 
         if (data.confirmPasswordMatch && data.isValidEmail && data.isValidPassWord) {
             Authentication.createAccount(
-                { email, password, name},
-                (user) => { 
+                { email, password, name },
+                (user) => {
                     Database.add(email, "Information", docData, false);
                     navigation.navigate('Email Verification');
                     console.log("Go to Email Verification Screen");
@@ -101,6 +117,8 @@ const SignUpScreen = ({ navigation }) => {
             )
         } else if (!data.confirmPasswordMatch) {
             Alert.alert("Sign Up Error", "Please confirm your password.");
+        } else if (!data.isValidName){
+            Alert.alert("Sign Up Error", "Please enter a valid name");
         } else if (!data.isValidEmail) {
             Alert.alert("Sign Up Error", "Please enter a valid email address.");
         } else if (!data.isValidPassWord) {
@@ -140,7 +158,13 @@ const SignUpScreen = ({ navigation }) => {
                                 label="Name"
                                 placeholder="Enter your name"
                                 value={name}
-                                onChangeText={name => setName(name)} />
+                                onChangeText={name => setName(name)}
+                                onEndEditing={(e) => handleValidName(e.nativeEvent.text)} />
+                            {data.isValidName ? null :
+                                <Animated.View animation="fadeInLeft" duration={500}>
+                                    <Text style={[styles.errorMsg, { marginRight: 160 }]}>Please enter a valid name.</Text>
+                                </Animated.View>
+                            }
 
                             {/* Email Input */}
                             <TextInput

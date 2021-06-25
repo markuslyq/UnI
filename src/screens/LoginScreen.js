@@ -9,7 +9,7 @@ import BackBtn from '../components/BackBtn';
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, route}) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [data, setData] = React.useState({
@@ -44,7 +44,10 @@ const LoginScreen = ({ navigation }) => {
                         navigation.navigate('First Time Login');
                         console.log("Go to First Time Login Screen");
                     } else {
-                        navigation.navigate('Bottom Tab');
+                        navigation.navigate('Bottom Tab', {
+                            screen: 'Profile',
+                            params: {document: doc.data()},
+                        });
                         console.log("Go to Profile Screen");
                     }
                 },
@@ -64,6 +67,7 @@ const LoginScreen = ({ navigation }) => {
                 }
             )
         } else {
+            setIsLoginLoading(false);
             Alert.alert("Login Error", "Please key in a valid email address.");
         }
     }

@@ -9,7 +9,7 @@ import MultiSelect from 'react-native-multiple-select';
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 
-const InterestPromptScreen = ({ navigation }) => {
+const InterestPromptScreen = ({ navigation, route }) => {
 
     const interestList = [{
         id: 0,
@@ -180,9 +180,14 @@ const InterestPromptScreen = ({ navigation }) => {
         FirstTimeLogin: false
     }
 
-    const continuePress = () => {
+    const continuePress = async () => {
         Database.add(email, "Information", docData, true);
-        navigation.navigate('Bottom Tab');
+        const doc = await Database.db.collection(email).doc("Information").get();
+        console.log(doc.data());
+        navigation.navigate('Bottom Tab', {
+            screen: 'Profile',
+            params: {document: doc.data()},
+        });
         console.log("Go to Profile Screen");
     }
 

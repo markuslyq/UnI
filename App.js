@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useFonts } from 'expo-font';
 
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
@@ -19,6 +20,17 @@ import Navigator from './navigation/RegistrationStack'
 
 
 export default function App() {
+
+  const [loaded] = useFonts({
+    Montserrat: require('./assets/fonts/Montserrat/Montserrat-Regular.ttf'),
+    MontserratExtraLight: require('./assets/fonts/Montserrat/Montserrat-ExtraLight.ttf'),
+    MontserratSemiBold: require('./assets/fonts/Montserrat/Montserrat-SemiBold.ttf')
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <SafeAreaProvider >
       {/* <Navigation colorScheme={colorScheme} /> */}
