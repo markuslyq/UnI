@@ -15,16 +15,20 @@ import GenderScreen from './src/screens/GenderScreen';
 import TestScreen from './src/screens/Test';
 import BottomTab from './navigation/BottomTabNavigation';
 import ProfileScreen from './src/screens/Profile';
+import MessagesScreen from './src/screens/Messages';
 
 import Navigator from './navigation/RegistrationStack'
-
+import AppStack from './navigation/Route';
 
 export default function App() {
 
   const [loaded] = useFonts({
     Montserrat: require('./assets/fonts/Montserrat/Montserrat-Regular.ttf'),
     MontserratExtraLight: require('./assets/fonts/Montserrat/Montserrat-ExtraLight.ttf'),
-    MontserratSemiBold: require('./assets/fonts/Montserrat/Montserrat-SemiBold.ttf')
+    MontserratSemiBold: require('./assets/fonts/Montserrat/Montserrat-SemiBold.ttf'),
+    SFPro: require('./assets/fonts/SFPro/SFPro-Regular.ttf'),
+    SFProMedium: require('./assets/fonts/SFPro/SFPro-Medium.ttf'),
+    SFProBold: require('./assets/fonts/SFPro/SFPro-Bold.ttf')
   });
 
   if (!loaded) {
@@ -43,7 +47,10 @@ export default function App() {
       {/* <GenderScreen /> */}
       {/* <TestScreen /> */}
       {/* <ProfileScreen /> */}
-      <Navigator />
+      {/* <MessagesScreen /> */}
+      {/* <Navigator /> */}
+      <AppStack />
+      {/* <MsgStack /> */}
       {/* <BottomTab /> */}
       <StatusBar />
     </SafeAreaProvider>

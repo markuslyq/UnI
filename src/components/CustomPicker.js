@@ -54,7 +54,7 @@ const CustomPicker = (props) => {
             onPress={() => open()}>
             <View>
                 <View style={textStyle}>
-                    <Text style={{ fontFamily: 'Avenir' }} >{selectedItem}</Text>
+                    <Text style={{ fontFamily: 'SFPro' }} >{selectedItem}</Text>
                 </View>
 
                 <Modal

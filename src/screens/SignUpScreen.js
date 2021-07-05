@@ -25,14 +25,7 @@ const SignUpScreen = ({ navigation }) => {
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
     const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
 
-    const docData = {
-        Name: name,
-        FirstTimeLogin: true,
-        Gender: '',
-        Major: '',
-        CCAs: '',
-        Interest: ''
-    }
+    const dummy = {};
 
     let letters = /^[A-Za-z]+$/;
 
@@ -94,16 +87,48 @@ const SignUpScreen = ({ navigation }) => {
 
     const signUpPress = () => {
         Keyboard.dismiss();
+        setSignUpLoading(true);
 
         if (data.confirmPasswordMatch && data.isValidEmail && data.isValidPassWord) {
             Authentication.createAccount(
                 { email, password, name },
-                (user) => {
+                async (user) => {
+                    const docData = {
+                        Name: name,
+                        FirstTimeLogin: true,
+                        UserID: user.uid,
+                        Gender: '',
+                        Major: '',
+                        CCAs: '',
+                        Interest: ''
+                    }
                     Database.add(email, "Information", docData, false);
+
+                    const mymsg = {
+                        _id: '0000',
+                        createdAt: new Date(),
+                        sentBy: '0',
+                        sentTo: user.uid,
+                        text: "Hey there, welcome to U&I!",
+                        user: {
+                            _id: '0',
+                            name: 'Admin'
+                        }
+                    }
+                    Database.db.collection(email)
+                        .doc('Chats')
+                        .set(dummy, { merge: true })
+
+                    Database.db.collection(email)
+                        .doc('Chats')
+                        .collection('admin@uni.com')
+                        .add(mymsg)
+                        
                     navigation.navigate('Email Verification');
                     console.log("Go to Email Verification Screen");
                 },
                 (error) => {
+                    setSignUpLoading(false);
                     if (error == 'auth/email-already-in-use') {
                         Alert.alert("Sign Up Error", "Email is already in use.")
                     } else if (error == 'auth/weak-password') {
@@ -116,14 +141,19 @@ const SignUpScreen = ({ navigation }) => {
 
             )
         } else if (!data.confirmPasswordMatch) {
+            setSignUpLoading(false);
             Alert.alert("Sign Up Error", "Please confirm your password.");
-        } else if (!data.isValidName){
+        } else if (!data.isValidName) {
+            setSignUpLoading(false);
             Alert.alert("Sign Up Error", "Please enter a valid name");
         } else if (!data.isValidEmail) {
+            setSignUpLoading(false);
             Alert.alert("Sign Up Error", "Please enter a valid email address.");
         } else if (!data.isValidPassWord) {
+            setSignUpLoading(false);
             Alert.alert("Weak Password", "Please use a stronger password.");
         } else {
+            setSignUpLoading(false);
             Alert.alert("Sign Up Error", "Please key in a valid email address and confirm your password.");
         }
     }

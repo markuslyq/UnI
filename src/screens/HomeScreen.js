@@ -17,33 +17,35 @@ const HomeScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
             <ScrollView>
-                {/* Logo */}
-                <Image source={require('../../assets/images/UnILogo(full).png')}
-                    style={styles.uniLogo} />
+                <View style={styles.container}>
+                    {/* Logo */}
+                    <Image source={require('../../assets/images/UnILogo(full).png')}
+                        style={styles.uniLogo} />
 
-                <View style={styles.bottomContainer}>
+                    <View style={styles.bottomContainer}>
 
-                    {/* Description */}
-                    <Text style={styles.welcomeText}>Welcome</Text>
-                    <Text style={styles.descriptionText}>Create an account and start{"\n"}making new UNI friends</Text>
+                        {/* Description */}
+                        <Text style={styles.welcomeText}>Welcome</Text>
+                        <Text style={styles.descriptionText}>Create an account and start{"\n"}making new UNI friends</Text>
 
-                    {/* Getting Started Button */}
-                    <Button style={styles.signUpButton}
-                        labelStyle={styles.signUpButtonText}
-                        mode="contained"
-                        color="#FD9E0F"
-                        uppercase={false}
-                        onPress={signUpPress}>
-                        Get Started
-                    </Button>
+                        {/* Getting Started Button */}
+                        <Button style={styles.signUpButton}
+                            labelStyle={styles.signUpButtonText}
+                            mode="contained"
+                            color="#FD9E0F"
+                            uppercase={false}
+                            onPress={signUpPress}>
+                            Get Started
+                        </Button>
 
-                    {/* Login Prompt */}
-                    <Text style={styles.descriptionText}>Already have an account?
-                        <Text style={styles.logInText} onPress={logInPress}>  Log In</Text>
-                    </Text>
+                        {/* Login Prompt */}
+                        <Text style={styles.descriptionText}>Already have an account?
+                            <Text style={styles.logInText} onPress={logInPress}>  Log In</Text>
+                        </Text>
 
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 100,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
     bottomContainer: {
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
     },
     uniLogo: {
         marginRight: 13,
+        marginTop: 40,
         width: 300
     },
     welcomeText: {

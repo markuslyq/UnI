@@ -181,12 +181,11 @@ const InterestPromptScreen = ({ navigation, route }) => {
     }
 
     const continuePress = async () => {
-        Database.add(email, "Information", docData, true);
         const doc = await Database.db.collection(email).doc("Information").get();
         console.log(doc.data());
         navigation.navigate('Bottom Tab', {
             screen: 'Profile',
-            params: {document: doc.data()},
+            params: { document: doc.data() },
         });
         console.log("Go to Profile Screen");
     }
@@ -198,6 +197,7 @@ const InterestPromptScreen = ({ navigation, route }) => {
             <BackBtn onPress={() => navigation.goBack()} />
 
             <ScrollView>
+
                 <View style={styles.container}>
                     {/* Logo */}
                     <Image source={require('../../assets/images/UnILogo(full).png')}
@@ -210,6 +210,7 @@ const InterestPromptScreen = ({ navigation, route }) => {
 
                 </View>
 
+
                 <MultiSelect
                     hideTags
                     items={interestList}
@@ -218,6 +219,7 @@ const InterestPromptScreen = ({ navigation, route }) => {
                         setSelectedItems(selected);
                         setInterests(selected);
                         console.log(selected);
+                        Database.add(email, "Information", docData, true);
                     }}
                     selectedItems={selectedItems}
                     selectText="Select your interest(s)"
@@ -233,21 +235,21 @@ const InterestPromptScreen = ({ navigation, route }) => {
                     styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
                     styleMainWrapper={{ marginHorizontal: 40 }}
                 />
-
-                <View style={styles.inputContainer}>
-
-
-                    {/* Continue Button */}
-                    <Button style={styles.continueButton}
-                        labelStyle={styles.continueButtonText}
-                        mode="contained"
-                        color="#FD9E0F"
-                        uppercase={false}
-                        onPress={continuePress}>
-                        Continue
-                    </Button>
-                </View>
             </ScrollView>
+            <View style={styles.inputContainer}>
+
+
+                {/* Continue Button */}
+                <Button style={styles.continueButton}
+                    labelStyle={styles.continueButtonText}
+                    mode="contained"
+                    color="#FD9E0F"
+                    uppercase={false}
+                    onPress={continuePress}>
+                    Continue
+                </Button>
+            </View>
+
         </SafeAreaView >
     )
 

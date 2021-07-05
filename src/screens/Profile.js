@@ -4,18 +4,20 @@ import { SafeAreaView, StyleSheet, Text, View, Image, Alert, TouchableOpacity, S
 
 import { Button, Appbar, Avatar, Card, Chip } from 'react-native-paper';
 import { useState } from 'react/cjs/react.development';
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
 import moment from 'moment';
 
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
-import { render } from 'react-dom';
-import { ScreenStackHeaderRightView } from 'react-native-screens';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 const ProfileScreen = ({ navigation, route }) => {
+
+    console.log("At Profile Screen")
 
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -24,24 +26,14 @@ const ProfileScreen = ({ navigation, route }) => {
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
+    const sheetRef = React.useRef(null);
+
     const { document } = route.params;
     const user = Authentication.auth.currentUser;
-    let email = user.email;
-    let name = user.displayName;
-
-    const [info, setInfo] = useState();
-
-    Database.db.collection(email).doc("Information").get()
-        .then((doc) => {
-            if (doc.exists) {
-                setInfo(doc.data());
-            } else {
-                console.log("No such document");
-            }
-        }).catch((error) => {
-            console.log(error);
-        })
-
+    if (user) {
+        let email = user.email;
+        let name = user.displayName;
+    } 
     const CCAs = document.CCAs;
     const CCAchips = [];
 
@@ -56,9 +48,59 @@ const ProfileScreen = ({ navigation, route }) => {
         interestsChips.push(<Chip style={{ margin: 3 }}>{interests[i]}</Chip>)
     }
 
+    const renderInner = () => (
+        <View style={styles.panel}>
+            <View style={{ alignItems: 'center' }}>
+                <Text style={styles.panelTitle}>Settings</Text>
+                <Button style={styles.signOutButton}
+                    labelStyle={styles.signOutButtonText}
+                    mode="contained"
+                    color="#FD9E0F"
+                    uppercase={false}
+                    onPress={editProfilePress}>
+                    Edit Profile
+                </Button>
+                <Button style={styles.signOutButton}
+                    labelStyle={styles.signOutButtonText}
+                    mode="contained"
+                    color="#FD9E0F"
+                    uppercase={false}
+                    onPress={signOutPress}>
+                    Sign Out
+                </Button>
+                <Button style={styles.signOutButton}
+                    labelStyle={styles.signOutButtonText}
+                    mode="contained"
+                    color="#FD9E0F"
+                    uppercase={false}
+                    onPress={() => sheetRef.current.snapTo(1)}>
+                    Cancel
+                </Button>
+            </View>
+
+        </View>
+    )
+
+    const renderHeader = () => (
+        <View style={styles.header}>
+            <View style={styles.panelHeader}>
+                <View style={styles.panelHandle} />
+            </View>
+        </View>
+    );
+
+    const editProfilePress = () => {
+        console.log("Edit Profile Pressed");
+    }
+
     const signOutPress = () => {
         Authentication.signOut(
-            () => { navigation.navigate('Home') },
+            () => {
+                navigation.navigate(
+                    'Registration', { screen: 'Home' }
+                );
+                console.log("Go to Home Screen");
+            },
             (error) => {
                 Alert.alert("Sign Out Error", error);
             }
@@ -68,9 +110,25 @@ const ProfileScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={{ backgroundColor: '#FD9E0F' }}>
 
-            <Appbar.Header style={styles.header}>
+            <BottomSheet
+                ref={sheetRef}
+                snapPoints={[330, 0]}
+                renderContent={renderInner}
+                renderHeader={renderHeader}
+                initialSnap={1}
+                enabledGestureInteraction={true}
+            />
+
+            <Appbar.Header style={styles.appBarHeader}>
                 <Appbar.Content title="Profile" titleStyle={styles.headerText} />
-                <Appbar.Action icon="cog" color="#2e2e2e" onPress={() => console.log(chips)} />
+                <Appbar.Action
+                    icon="cog"
+                    color="#2e2e2e"
+                    onPress={() => {
+                        console.log("open bottom sheet");
+                        sheetRef.current.snapTo(0);
+                    }}
+                />
             </Appbar.Header>
 
             <ScrollView refreshControl={
@@ -91,7 +149,7 @@ const ProfileScreen = ({ navigation, route }) => {
                         }} />
                     <View style={styles.profileDisplay}>
                         <Text style={styles.helloNameText}>Hello</Text>
-                        <Text style={styles.profileName}>{name}</Text>
+                        <Text style={styles.profileName}>{document.Name}</Text>
                     </View>
                 </View>
 
@@ -123,22 +181,16 @@ const ProfileScreen = ({ navigation, route }) => {
                             {CCAchips}
                         </View>
                     </View>
-                    <View style={styles.label}>
+                    <View style={[styles.label, { marginBottom: 40 }]}>
                         <Text style={styles.labelHeader}>Interest(s)</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: 7 }}>
                             {interestsChips}
                         </View>
                     </View>
-                    {/* <View style={styles.button}>
-                    <Button style={styles.signOutButton}
-                        labelStyle={styles.signOutButtonText}
-                        mode="contained"
-                        color="#FD9E0F"
-                        uppercase={false}
-                        onPress={signOutPress}>
-                        Sign Out
-                    </Button>
-                </View> */}
+                    <View style={styles.lastLabel}>
+                        <Text style={styles.lastLabelHeader}></Text>
+                        <Text style={styles.lastLabelText}></Text>
+                    </View>
 
                 </View>
             </ScrollView>
@@ -150,14 +202,45 @@ const ProfileScreen = ({ navigation, route }) => {
 const screenHeight = Dimensions.get('window').height
 
 const styles = StyleSheet.create({
+    panel: {
+        padding: 20,
+        backgroundColor: '#FFFFFF',
+        paddingTop: 10,
+    },
     header: {
-        backgroundColor: 'transparent'
+        backgroundColor: '#FFFFFF',
+        shadowColor: '#333333',
+        shadowOffset: { width: -1, height: -3 },
+        shadowRadius: 2,
+        shadowOpacity: 0.4,
+        // elevation: 5,
+        paddingTop: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+    },
+    panelHeader: {
+        alignItems: 'center',
+    },
+    panelHandle: {
+        width: 40,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: '#00000040',
+        marginBottom: 10,
+    },
+    panelTitle: {
+        fontFamily: 'SFPro',
+        fontSize: 27,
+        height: 35,
+    },
+    appBarHeader: {
+        backgroundColor: 'transparent',
+        height: 45
     },
     headerText: {
         color: '#2e2e2e',
-        fontFamily: 'Avenir',
-        fontWeight: 'bold',
-        fontSize: 20,
+        fontFamily: 'SFProMedium',
+        fontSize: 18,
     },
     container: {
         height: "auto", maxHeight: screenHeight,
@@ -227,22 +310,36 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#2e2e2e'
     },
+    lastLabel: {
+        marginTop: 20,
+        marginHorizontal: 30,
+        borderBottomWidth: 1,
+        borderBottomColor: '#FFFFFF'
+    },
+    lastLabelHeader: {
+        marginLeft: 10,
+    },
+    lastLabelText: {
+        marginLeft: 10,
+        marginTop: 7,
+        marginBottom: 7,
+    },
     button: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
     signOutButton: {
-        marginTop: 40,
+        borderRadius: 20,
+        marginTop: 10,
         marginBottom: 10,
         width: 300,
-        height: 50,
+        height: 46,
         justifyContent: 'center',
         alignItems: 'center'
     },
     signOutButtonText: {
-        borderRadius: 20,
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

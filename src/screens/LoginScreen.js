@@ -8,8 +8,10 @@ import BackBtn from '../components/BackBtn';
 
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
+import User from '../../User';
 
 const LoginScreen = ({ navigation, route}) => {
+
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [data, setData] = React.useState({
@@ -40,6 +42,13 @@ const LoginScreen = ({ navigation, route}) => {
                 async (name) => {
                     const doc = await Database.db.collection(email).doc("Information").get();
                     console.log(doc.data());
+                    const user = Authentication.auth.currentUser;
+                    const docData = {
+                        UserID: user.uid
+                    }
+                    Database.add(email, "Information", docData, true);
+                    User.email = user.email;
+                    User.name = user.displayName;
                     if (doc.data().FirstTimeLogin == true) {
                         navigation.navigate('First Time Login');
                         console.log("Go to First Time Login Screen");

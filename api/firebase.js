@@ -3,12 +3,13 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBJdXNlu-r7TKIUkNaUR-uAOBv9SoNQfbI",
-    authDomain: "orbital---uni.firebaseapp.com",
-    projectId: "orbital---uni",
-    storageBucket: "orbital---uni.appspot.com",
-    messagingSenderId: "363075490260",
-    appId: "1:363075490260:web:9edafd1fcc31490b514641"
+    apiKey: "AIzaSyBeqbVEH6D2o1rrf9hXbA9Vip6vjEVNT00",
+    authDomain: "uni2-915b4.firebaseapp.com",
+    databaseURL: "https://uni2-915b4-default-rtdb.firebaseio.com",
+    projectId: "uni2-915b4",
+    storageBucket: "uni2-915b4.appspot.com",
+    messagingSenderId: "491481218411",
+    appId: "1:491481218411:web:c8b49f31406f970bdea02e"
 };
 
 const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();

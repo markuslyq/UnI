@@ -420,32 +420,33 @@ const CCAPromptScreen = ({ navigation }) => {
 
                     </View>
 
-                    <MultiSelect
-                        hideTags
-                        items={ccaList}
-                        uniqueKey="name"
-                        onSelectedItemsChange={(selected) => {
-                            setSelectedItems(selected);
-                            setCCAs(selected);
-                            console.log(selected);
-                        }}
-                        selectedItems={selectedItems}
-                        selectText="Select your CCA(s)"
-                        searchInputPlaceholderText="Search Items..."
-                        selectedItemTextColor="#007AFF"
-                        selectedItemIconColor="#007AFF"
-                        itemTextColor="#000"
-                        displayKey="name"
-                        searchInputStyle={{ color: '#8e8e93' }}
-                        submitButtonColor="#FD9E0F"
-                        submitButtonText="Submit"
-                        styleInputGroup={{ paddingVertical: 5 }}
-                        styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
-                        styleMainWrapper={{ marginHorizontal: 40 }}
-                    />
+                    <KeyboardAvoidingView>
+                        <MultiSelect
+                            hideTags
+                            items={ccaList}
+                            uniqueKey="name"
+                            onSelectedItemsChange={(selected) => {
+                                setSelectedItems(selected);
+                                setCCAs(selected);
+                                console.log(selected);
+                            }}
+                            selectedItems={selectedItems}
+                            selectText="Select your CCA(s)"
+                            searchInputPlaceholderText="Search Items..."
+                            selectedItemTextColor="#007AFF"
+                            selectedItemIconColor="#007AFF"
+                            itemTextColor="#000"
+                            displayKey="name"
+                            searchInputStyle={{ color: '#8e8e93' }}
+                            submitButtonColor="#FD9E0F"
+                            submitButtonText="Submit"
+                            styleInputGroup={{ paddingVertical: 5 }}
+                            styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
+                            styleMainWrapper={{ marginHorizontal: 40 }}
+                        />
+                    </KeyboardAvoidingView>
 
                     <View style={styles.inputContainer}>
-
 
                         {/* Continue Button */}
                         <Button style={styles.continueButton}

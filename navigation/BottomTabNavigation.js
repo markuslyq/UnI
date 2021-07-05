@@ -5,7 +5,7 @@ import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-n
 
 import ProfileScreen from '../src/screens/Profile';
 import MatchScreen from '../src/screens/MatchScreen';
-import ChatScreen from '../src/screens/Chats';
+import MessagesScreen from '../src/screens/Messages';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +35,7 @@ function BottomTab() {
                         </View>
                     ),
                 }} />
-            <Tab.Screen name="Chat" component={ChatScreen}
+            <Tab.Screen name="Messages" component={MessagesScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View>

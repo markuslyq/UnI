@@ -25,31 +25,33 @@ const EmailVerificationScreen = ({ route, navigation }) => {
         <SafeAreaView>
 
             <ScrollView>
-                {/* Logo */}
-                <Image source={require('../../assets/images/UnILogo(full).png')}
-                    style={styles.uniLogo} />
+                <View>
+                    {/* Logo */}
+                    <Image source={require('../../assets/images/UnILogo(full).png')}
+                        style={styles.uniLogo} />
 
-                <View style={styles.bottomContainer}>
+                    <View style={styles.bottomContainer}>
 
-                    {/* Description */}
-                    <Text style={styles.welcomeText}>Verify your{"\n"}email address</Text>
-                    <Text style={styles.descriptionText}>Thank you for signing up but before we get{"\n"}started, a verification link has been sent to{"\n"}your email and we'll need to verify it.</Text>
+                        {/* Description */}
+                        <Text style={styles.welcomeText}>Verify your{"\n"}email address</Text>
+                        <Text style={styles.descriptionText}>Thank you for signing up but before we get{"\n"}started, a verification link has been sent to{"\n"}your email and we'll need to verify it.</Text>
 
-                    {/* Login Button */}
-                    <Button style={styles.signInButton}
-                        labelStyle={styles.signInButtonText}
-                        mode="contained"
-                        color="#FD9E0F"
-                        uppercase={false}
-                        onPress={logInPress}>
-                        Log In
-                    </Button>
+                        {/* Login Button */}
+                        <Button style={styles.signInButton}
+                            labelStyle={styles.signInButtonText}
+                            mode="contained"
+                            color="#FD9E0F"
+                            uppercase={false}
+                            onPress={logInPress}>
+                            Log In
+                        </Button>
 
-                    {/* Send Verification Prompt */}
-                    {/* <Text style={styles.descriptionText}>Did not receive a verification link?
+                        {/* Send Verification Prompt */}
+                        {/* <Text style={styles.descriptionText}>Did not receive a verification link?
                         <Text style={styles.logInText} onPress={sendEmailVerification}>  Send Again</Text>
                     </Text> */}
 
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     uniLogo: {
-        marginTop:  50,
+        marginTop: 50,
         marginLeft: 30,
         width: 300
     },

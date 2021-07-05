@@ -17,28 +17,25 @@ import BottomTab from './BottomTabNavigation';
 
 const Stack = createStackNavigator();
 
-function RegNavigator(){
+function RegNavigator() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator 
+
+        <Stack.Navigator
             initialRouteName="Home"
-            screenOptions={{
-                headerShown: false
-              }}>
-                <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="SignUp" component={SignUpScreen} />
-                <Stack.Screen name="Email Verification" component={EmailVerificationScreen} />
-                <Stack.Screen name="First Time Login" component={FirstTimeLoginScreen} />
-                <Stack.Screen name="Gender" component={GenderScreen} />
-                <Stack.Screen name="Birthday" component={BirthdayPromptScreen} />
-                <Stack.Screen name="Major" component={MajorScreen} />
-                <Stack.Screen name="Year" component={YearPromptScreen} />
-                <Stack.Screen name="CCAs" component={CCAPromptScreen} />
-                <Stack.Screen name="Interests" component={InterestPromptScreen} />
-                <Stack.Screen name="Bottom Tab" component={BottomTab} />
-            </Stack.Navigator>
-        </NavigationContainer>
+            >
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Email Verification" component={EmailVerificationScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="First Time Login" component={FirstTimeLoginScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Gender" component={GenderScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Birthday" component={BirthdayPromptScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Major" component={MajorScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Year" component={YearPromptScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="CCAs" component={CCAPromptScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Interests" component={InterestPromptScreen} options={{ headerShown: false}}/>
+            {/* <Stack.Screen name="Bottom Tab" component={BottomTab} /> */}
+        </Stack.Navigator>
     )
 }
 
