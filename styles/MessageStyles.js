@@ -9,6 +9,8 @@ export const Container = styled.View`
 
 export const Card = styled.TouchableOpacity`
   width: 100%;
+  border-bottom-width: 1px;
+  border-bottom-color: #cccccc;
 `;
 
 export const UserInfo = styled.View`
@@ -30,12 +32,10 @@ export const UserImg = styled.Image`
 export const TextSection = styled.View`
   flex-direction: column;
   justify-content: center;
-  padding: 15px;
+  padding: 10px;
   padding-left: 0;
   margin-left: 10px;
   width: 300px;
-  border-bottom-width: 1px;
-  border-bottom-color: #cccccc;
 `;
 
 export const UserInfoText = styled.View`

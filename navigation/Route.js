@@ -2,10 +2,13 @@ import * as React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { Avatar } from 'react-native-paper';
 
 import RegNavigator from './RegistrationStack';
 import BottomTab from './BottomTabNavigation';
 import ChatScreen from '../src/screens/ChatScreen';
+import EditProfileScreen from '../src/screens/EditProfile';
+import PersonProfileScreen from '../src/screens/PersonProfile';
 
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
@@ -48,8 +51,6 @@ function AppStack() {
                         // headerBackTitleVisible: false,
                         // headerTintColor: '#FD9E0F'
                         headerLeft: () => (
-                            // <Image style={styles.backIcon}source={require('../assets/images/back-icon.png')} 
-                            // />
                             <HeaderBackButton
                                 onPress={() => {
                                     navigation.navigate('Bottom Tab', {
@@ -59,8 +60,28 @@ function AppStack() {
                                 }
                                 }
                             />
+                        ),
+                        headerRight: () => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    console.log(route.params.userEmail)
+                                    navigation.navigate('Person Profile', { personEmail: route.params.userEmail });
+                                }}>
+                                <Avatar.Image
+                                    size={35}
+                                    style={{ marginRight: 10 }}
+                                    source={route.params.profilePhotoUri} />
+                            </TouchableOpacity>
                         )
                     })} />
+                <Stack.Screen name="Edit Profile" component={EditProfileScreen}
+                    options={{
+                        headerShown: false
+                    }} />
+                <Stack.Screen name="Person Profile" component={PersonProfileScreen}
+                    options={{
+                        headerShown: false
+                    }} />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 
 import { Button, TextInput, Chip } from 'react-native-paper';
 import BackBtn from '../components/BackBtn';
@@ -181,6 +181,7 @@ const InterestPromptScreen = ({ navigation, route }) => {
     }
 
     const continuePress = async () => {
+        Database.add("Users", email, docData, true);
         const doc = await Database.db.collection(email).doc("Information").get();
         console.log(doc.data());
         navigation.navigate('Bottom Tab', {
@@ -210,31 +211,32 @@ const InterestPromptScreen = ({ navigation, route }) => {
 
                 </View>
 
-
-                <MultiSelect
-                    hideTags
-                    items={interestList}
-                    uniqueKey="name"
-                    onSelectedItemsChange={(selected) => {
-                        setSelectedItems(selected);
-                        setInterests(selected);
-                        console.log(selected);
-                        Database.add(email, "Information", docData, true);
-                    }}
-                    selectedItems={selectedItems}
-                    selectText="Select your interest(s)"
-                    searchInputPlaceholderText="Search Items..."
-                    selectedItemTextColor="#007AFF"
-                    selectedItemIconColor="#007AFF"
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: '#CCC' }}
-                    submitButtonColor="#FD9E0F"
-                    submitButtonText="Submit"
-                    styleInputGroup={{ paddingVertical: 5 }}
-                    styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
-                    styleMainWrapper={{ marginHorizontal: 40 }}
-                />
+                <KeyboardAvoidingView>
+                    <MultiSelect
+                        hideTags
+                        items={interestList}
+                        uniqueKey="name"
+                        onSelectedItemsChange={(selected) => {
+                            setSelectedItems(selected);
+                            setInterests(selected);
+                            console.log(selected);
+                            Database.add(email, "Information", docData, true);
+                        }}
+                        selectedItems={selectedItems}
+                        selectText="Select your interest(s)"
+                        searchInputPlaceholderText="Search Items..."
+                        selectedItemTextColor="#007AFF"
+                        selectedItemIconColor="#007AFF"
+                        itemTextColor="#000"
+                        displayKey="name"
+                        searchInputStyle={{ color: '#CCC' }}
+                        submitButtonColor="#FD9E0F"
+                        submitButtonText="Submit"
+                        styleInputGroup={{ paddingVertical: 5 }}
+                        styleItemsContainer={{ backgroundColor: "#f2f2f7" }}
+                        styleMainWrapper={{ marginHorizontal: 40 }}
+                    />
+                </KeyboardAvoidingView>
             </ScrollView>
             <View style={styles.inputContainer}>
 

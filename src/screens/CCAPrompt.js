@@ -397,6 +397,7 @@ const CCAPromptScreen = ({ navigation }) => {
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
+        Database.add("Users", email, docData, true);
         navigation.navigate('Interests');
         console.log("Go to Interests Screen");
     }

@@ -7,7 +7,7 @@ import { set } from 'react-native-reanimated';
 const CustomPicker = (props) => {
 
     const { textStyle, defaultItem, items } = props;
-    const [selectedItem, setSelectedItem] = useState('');
+    const [selectedItem, setSelectedItem] = useState(defaultItem);
     const [show, setShow] = useState(false);
 
     const pickerRef = useRef();

@@ -13,6 +13,8 @@ import * as Database from "../../api/firestore";
 
 const BirthdayPromptScreen = ({ navigation }) => {
 
+    console.log("@Birthday Prompt Screen")
+
     const [birthday, setBirthday] = useState(new Date());
     const [age, setAge] = useState('');
     let ageVar = 18;
@@ -22,11 +24,12 @@ const BirthdayPromptScreen = ({ navigation }) => {
 
     const docData = {
         Age: age,
-        Birthday: moment(birthday).format("DD/MM/YYYY")
+        Birthday: birthday
     }
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
+        Database.add("Users", email, docData, true);
         navigation.navigate('Major');
         console.log("Go to Major Screen");
     }
@@ -68,7 +71,7 @@ const BirthdayPromptScreen = ({ navigation }) => {
                         defaultDate={new Date(moment().subtract(18, 'years'))}
                         onDateChange={(birthday) => {
                             console.log('birthday ' + moment(birthday).format('Do MMMM YYYY'));
-                            setBirthday(birthday);
+                            setBirthday(new Date(birthday));
                             let monthDiff = Date.now() - birthday;
                             let age_dt = new Date(monthDiff);
                             let year = age_dt.getUTCFullYear();

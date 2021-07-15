@@ -62,6 +62,7 @@ const MajorScreen = ({ navigation }) => {
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
+        Database.add("Users", email, docData, true);
         navigation.navigate('Year');
         console.log("Go to Year Screen");
     }

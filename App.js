@@ -16,6 +16,7 @@ import TestScreen from './src/screens/Test';
 import BottomTab from './navigation/BottomTabNavigation';
 import ProfileScreen from './src/screens/Profile';
 import MessagesScreen from './src/screens/Messages';
+import EditProfileScreen from './src/screens/EditProfile';
 
 import Navigator from './navigation/RegistrationStack'
 import AppStack from './navigation/Route';
@@ -48,6 +49,7 @@ export default function App() {
       {/* <TestScreen /> */}
       {/* <ProfileScreen /> */}
       {/* <MessagesScreen /> */}
+      {/* <EditProfileScreen /> */}
       {/* <Navigator /> */}
       <AppStack />
       {/* <MsgStack /> */}

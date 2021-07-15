@@ -100,9 +100,11 @@ const SignUpScreen = ({ navigation }) => {
                         Gender: '',
                         Major: '',
                         CCAs: '',
-                        Interest: ''
+                        Interest: '',
+                        ProfilePhotoUri: 'https://i1.wp.com/jejuhydrofarms.com/wp-content/uploads/2020/05/blank-profile-picture-973460_1280.png?ssl=1'
                     }
                     Database.add(email, "Information", docData, false);
+                    Database.add("Users", email, docData, false);
 
                     const mymsg = {
                         _id: '0000',
@@ -123,7 +125,23 @@ const SignUpScreen = ({ navigation }) => {
                         .doc('Chats')
                         .collection('admin@uni.com')
                         .add(mymsg)
-                        
+
+                    const adminLatest = {
+                        messengerID: '0',
+                        messengerEmail: 'admin@uni.com',
+                        messengerName: 'Admin',
+                        latestMsg: "Hey there, welcome to U&I!",
+                        Time: new Date(),
+                        sentBy: 'admin@uni.com',
+                        sentTo: email
+                    }
+
+                    Database.db.collection(email)
+                        .doc('Chats')
+                        .collection('Chatlists')
+                        .doc('admin@uni.com')
+                        .set(adminLatest)
+
                     navigation.navigate('Email Verification');
                     console.log("Go to Email Verification Screen");
                 },

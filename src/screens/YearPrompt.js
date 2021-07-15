@@ -6,7 +6,6 @@ import { Button, TextInput } from 'react-native-paper';
 import BackBtn from '../components/BackBtn';
 import CustomPicker from '../components/CustomPicker';
 
-
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 
@@ -25,6 +24,7 @@ const YearPromptScreen = ({ navigation }) => {
 
     const continuePress = () => {
         Database.add(email, "Information", docData, true);
+        Database.add("Users", email, docData, true);
         navigation.navigate('CCAs');
         console.log("Go to CCAs Screen");
     }

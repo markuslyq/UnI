@@ -38,6 +38,7 @@ const GenderScreen = ({ navigation }) => {
 
     const continuePress = () => {
             Database.add(email, "Information", docData, true);
+            Database.add("Users", email, docData, true);
             navigation.navigate('Birthday');
             console.log("Go to Birthday Screen");
     }

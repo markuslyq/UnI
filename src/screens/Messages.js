@@ -12,10 +12,12 @@ import {
   MessageText,
   TextSection,
 } from '../../styles/MessageStyles';
-import { Appbar } from 'react-native-paper';
+
+import moment from 'moment';
 
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
+import { Badge } from 'react-native-paper';
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -34,18 +36,6 @@ const MessagesScreen = ({ navigation, route }) => {
 
   const [Messages, setMessages] = useState([])
 
-  const MessagesArray = [
-    {
-      id: '0',
-      userEmail: 'admin@uni.com',
-      userName: 'U&I',
-      userImg: require('../../assets/images/UnILogo.png'),
-      messageTime: '5 mins ago',
-      messageText:
-        'Hey there, welcome to U&I',
-    }
-  ];
-
   let userID = "";
   let userEmail = "";
 
@@ -56,81 +46,49 @@ const MessagesScreen = ({ navigation, route }) => {
     userEmail = user.email;
   }
   // }
-  const chatRef = Database.db.collection(userEmail)
-    .doc('Chats')
-    .collection('Chatlists')
-    .orderBy('Time', 'asc')
 
-  const unSubscribe = chatRef.onSnapshot((querySnap) => {
-    querySnap.docs.map(docSnap => {
-      const data = docSnap.data();
-      // console.log(data);
-      const msgInfo = {
-        id: data.messengerID,
-        userEmail: data.messengerEmail,
-        userName: data.messengerName,
-        userImg: require('../../assets/images/blankProfilePic.png'),
-        messageTime: '4 mins ago',
-        messageText: data.latestMsg
+
+  useEffect(() => {
+    const chatRef = Database.db.collection(userEmail)
+      .doc('Chats')
+      .collection('Chatlists')
+      .orderBy('Time', 'asc')
+
+    const unSubscribe = chatRef.onSnapshot((querySnap) => {
+      const MessagesArray = [
+        // {
+        //   id: '0',
+        //   userEmail: 'admin@uni.com',
+        //   userName: 'U&I',
+        //   userImg: require('../../assets/images/UnILogo.png'),
+        //   messageTime: '5 mins ago',
+        //   messageText:
+        //     'Hey there, welcome to U&I!',
+        // }
+      ];
+      querySnap.docs.map(docSnap => {
+        const data = docSnap.data();
+        console.log(moment(data.Time.seconds * 1000).calendar());
+        const msgInfo = {
+          id: data.messengerID,
+          userEmail: data.messengerEmail,
+          userName: data.messengerName,
+          userImg: { uri: data.MessengerProfilePhotoUri },
+          messageTime: moment(data.Time.seconds * 1000).calendar(),
+          messageText: data.sentBy == userEmail ? "You: " + data.latestMsg : data.latestMsg,
+          sentBy: data.sentBy,
+        }
+
+        MessagesArray.unshift(msgInfo);
+        console.log(userEmail, " MessageArray: ", MessagesArray);
+        setMessages(MessagesArray);
+        console.log(userEmail, ' Messages: ', Messages);
+      })
+      return () => {
+        unSubscribe()
       }
-      MessagesArray.unshift(msgInfo);
-      // setMessages(MessagesArray);
-      console.log('MessageArray: ', MessagesArray);
     })
-    return () => {
-      unSubscribe()
-    }
-  })
-
-  // setMessages(MessagesArray);
-  // useEffect(() => {
-  //   // let chatLists = [];
-  //   // Database.db.collection(userEmail)
-  //   //     .doc('Chats')
-  //   //     .collection('Chatlists')
-  //   //     .get()
-  //   //     .then((doc) => {
-  //   //       chatLists = doc.data();
-  //   //       console.log(chatLists)
-  //   // for (let i = 0; i < chatLists.length; i++){
-  //   //   Database.db.collection(chatLists[i]).doc("Information").get()
-  //   //   .then((info) => {
-  //   //     console.log(info.data());
-  //   //     const msgInfo = {
-  //   //       id: info.data().UserID,
-  //   //       userName: info.data().Name,
-  //   //       userImg: require('../../assets/images/blankProfilePic.png'),
-  //   //     }
-  //   //   })
-  //   // }
-  //   getUser();
-  //   const chatRef = Database.db.collection(userEmail)
-  //     .doc('Chats')
-  //     .collection('Chatlists')
-  //     .orderBy('Time', 'asc')
-
-  //   const unSubscribe = chatRef.onSnapshot((querySnap) => {
-  //     querySnap.docs.map(docSnap => {
-  //       const data = docSnap.data();
-  //       // console.log(data);
-  //       const msgInfo = {
-  //         id: data.messengerID,
-  //         userEmail: data.messengerEmail,
-  //         userName: data.messengerName,
-  //         userImg: require('../../assets/images/blankProfilePic.png'),
-  //         messageTime: '4 mins ago',
-  //         messageText: data.latestMsg
-  //       }
-  //       Messages.unshift(msgInfo);
-  //       console.log(Messages);
-
-  //     })
-
-  //     return () => {
-  //       unSubscribe()
-  //     }
-  //   })
-  // }, [])
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
@@ -143,10 +101,10 @@ const MessagesScreen = ({ navigation, route }) => {
       >
         <Container>
           <FlatList
-            data={MessagesArray}
+            data={Messages}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <Card onPress={() => navigation.navigate('Chat', { userName: item.userName, userEmail: item.userEmail, userID: item.id, email: userEmail })}>
+              <Card onPress={() => navigation.navigate('Chat', { userName: item.userName, userEmail: item.userEmail, userID: item.id, email: userEmail, profilePhotoUri: item.userImg })}>
                 <UserInfo>
                   <UserImgWrapper>
                     <UserImg source={item.userImg} />
@@ -156,7 +114,16 @@ const MessagesScreen = ({ navigation, route }) => {
                       <UserName>{item.userName}</UserName>
                       <PostTime>{item.messageTime}</PostTime>
                     </UserInfoText>
-                    <MessageText>{item.messageText}</MessageText>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <MessageText>{item.messageText}</MessageText>
+                      {
+                        item.sentBy == userEmail ?
+                          null :
+                          <Badge
+                            size={10}
+                            theme={{ colors: { notification: '#FD9E0F' } }} />
+                      }
+                    </View>
                   </TextSection>
                 </UserInfo>
               </Card>

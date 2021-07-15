@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, Alert, TouchableOpacity, ScrollView, Dimensions, RefreshControl } from 'react-native';
 
 import { Button, Appbar, Avatar, Card, Chip } from 'react-native-paper';
@@ -15,9 +15,9 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-const ProfileScreen = ({ navigation, route }) => {
+const PersonProfileScreen = ({ navigation, route }) => {
 
-    console.log("At Profile Screen")
+    console.log("At Person Profile Screen")
 
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -26,112 +26,54 @@ const ProfileScreen = ({ navigation, route }) => {
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
-    const sheetRef = React.useRef(null);
+    const [document, setDocument] = useState({});
 
-    const { document } = route.params;
+    const personEmail = route.params.personEmail;
 
-    const user = Authentication.auth.currentUser;
-    if (user) {
-        let email = user.email;
-        let name = user.displayName;
-    }
-    const CCAs = document.CCAs;
+    const [birthday, setBirthday] = useState(new Date());
+
     const CCAchips = [];
+    const [CCADisplay, setCCADisplay] = useState([]);
 
-    for (let i = 0; i < CCAs.length; i++) {
-        CCAchips.push(<Chip style={{ margin: 3 }}>{CCAs[i]}</Chip>)
-    }
-
-    const interests = document.Interest;
     const interestsChips = [];
+    const [interestsDisplay, setInterestsDisplay] = useState([]);
 
-    for (let i = 0; i < interests.length; i++) {
-        interestsChips.push(<Chip style={{ margin: 3 }}>{interests[i]}</Chip>)
-    }
+    useEffect(() => {
 
-    const renderInner = () => (
-        <View style={styles.panel}>
-            <View style={{ alignItems: 'center' }}>
-                <Text style={styles.panelTitle}>Settings</Text>
-                <Button style={styles.signOutButton}
-                    labelStyle={styles.signOutButtonText}
-                    mode="contained"
-                    color="#FD9E0F"
-                    uppercase={false}
-                    onPress={editProfilePress}>
-                    Edit Profile
-                </Button>
-                <Button style={styles.signOutButton}
-                    labelStyle={styles.signOutButtonText}
-                    mode="contained"
-                    color="#FD9E0F"
-                    uppercase={false}
-                    onPress={signOutPress}>
-                    Sign Out
-                </Button>
-                <Button style={styles.signOutButton}
-                    labelStyle={styles.signOutButtonText}
-                    mode="contained"
-                    color="#FD9E0F"
-                    uppercase={false}
-                    onPress={() => sheetRef.current.snapTo(1)}>
-                    Cancel
-                </Button>
-            </View>
+        const unSubscribe = Database.db.collection(personEmail)
+            .doc('Information')
+            .onSnapshot((documentSnapshot) => {
+                if (documentSnapshot.exists) {
+                    console.log("Person Data: ", documentSnapshot.data());
+                    setDocument(documentSnapshot.data());
 
-        </View>
-    )
+                    setBirthday(documentSnapshot.data().Birthday.seconds*1000);
 
-    const renderHeader = () => (
-        <View style={styles.header}>
-            <View style={styles.panelHeader}>
-                <View style={styles.panelHandle} />
-            </View>
-        </View>
-    );
+                    for (let i = 0; i < documentSnapshot.data().CCAs.length; i++) {
+                        CCAchips.push(<Chip style={{ margin: 3 }}>{documentSnapshot.data().CCAs[i]}</Chip>);
+                    }
+                    setCCADisplay(CCAchips);
 
-    const editProfilePress = () => {
-        console.log("Edit Profile Pressed");
-        navigation.navigate('Edit Profile', { document: document });
-    }
+                    for (let i = 0; i < documentSnapshot.data().Interest.length; i++) {
+                        interestsChips.push(<Chip style={{ margin: 3 }}>{documentSnapshot.data().Interest[i]}</Chip>)
+                    }
+                    setInterestsDisplay(interestsChips);
+                }
+            })
 
-    const signOutPress = () => {
-        Authentication.signOut(
-            () => {
-                navigation.navigate(
-                    'Registration', { screen: 'Home' }
-                );
-                console.log("Go to Home Screen");
-            },
-            (error) => {
-                Alert.alert("Sign Out Error", error);
-            }
-        )
-    }
+        return () => {
+            unSubscribe();
+        }
+
+
+    }, []);
 
     return (
         <SafeAreaView style={{ backgroundColor: '#FD9E0F' }}>
 
-            <BottomSheet
-                ref={sheetRef}
-                snapPoints={['40%', 0]}
-                renderContent={renderInner}
-                renderHeader={renderHeader}
-                initialSnap={1}
-                enabledGestureInteraction={true}
-            // enabledContentGestureInteraction={true}
-            />
-
             <Appbar.Header style={styles.appBarHeader}>
-                <Appbar.Content title="Profile" titleStyle={styles.headerText} />
-                <Appbar.Action
-                    icon="cog"
-                    color="#000000"
-                    onPress={() => {
-                        console.log("open bottom sheet");
-                        sheetRef.current.snapTo(0);
-                    }}
-                />
+                <Appbar.BackAction onPress={() => navigation.goBack()}/>
+                <Appbar.Content title={document.Name} titleStyle={styles.headerText} />
             </Appbar.Header>
 
             <ScrollView refreshControl={
@@ -151,7 +93,7 @@ const ProfileScreen = ({ navigation, route }) => {
                             marginRight: 20
                         }} />
                     <View style={styles.profileDisplay}>
-                        <Text style={styles.helloNameText}>Hello</Text>
+                        <Text style={styles.helloNameText}>Hello, I am</Text>
                         <Text style={styles.profileName}>{document.Name}</Text>
                     </View>
                 </View>
@@ -168,7 +110,7 @@ const ProfileScreen = ({ navigation, route }) => {
                     </View>
                     <View style={styles.label}>
                         <Text style={styles.labelHeader}>Birthday</Text>
-                        <Text style={styles.labelText}>{moment(document.Birthday.toMillis()).format("Do MMMM YYYY")}</Text>
+                        <Text style={styles.labelText}>{moment(birthday).format("Do MMMM YYYY")}</Text>
                     </View>
                     <View style={styles.label}>
                         <Text style={styles.labelHeader}>Major</Text>
@@ -181,13 +123,13 @@ const ProfileScreen = ({ navigation, route }) => {
                     <View style={styles.label}>
                         <Text style={styles.labelHeader}>CCA(s)</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: 7 }}>
-                            {CCAchips}
+                            {CCADisplay}
                         </View>
                     </View>
                     <View style={[styles.label, { marginBottom: 40 }]}>
                         <Text style={styles.labelHeader}>Interest(s)</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: 7 }}>
-                            {interestsChips}
+                            {interestsDisplay}
                         </View>
                     </View>
                     <View style={styles.lastLabel}>
@@ -347,4 +289,4 @@ const styles = StyleSheet.create({
         fontWeight: 'normal'
     }
 })
-export default ProfileScreen;
+export default PersonProfileScreen;
