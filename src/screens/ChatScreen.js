@@ -15,15 +15,16 @@ const ChatScreen = ({ navigation, route }) => {
 
     const user = Authentication.auth.currentUser;
     const userID = user.uid;
-    const userName = user.displayName;
+    let userName = user.displayName;
     const userEmail = route.params.email;
-    const personName = route.params.userName;
+    let personName = route.params.userName;
     const personEmail = route.params.userEmail;
     const personID = route.params.userID;
     let personProfilePic = "";
     let userProfilePic = "";
 
     console.log("At", personName, "Chat Screen")
+    console.log(route.params.profilePhotoUri);
 
     const [messages, setMessages] = useState([]);
     const dummy = {};
@@ -36,6 +37,7 @@ const ChatScreen = ({ navigation, route }) => {
                 if (documentSnapshot.exists) {
                     console.log('Person Data: ', documentSnapshot.data());
                     personProfilePic = documentSnapshot.data().ProfilePhotoUri;
+                    personName = documentSnapshot.data().Name;
                 }
             })
     }
@@ -48,6 +50,7 @@ const ChatScreen = ({ navigation, route }) => {
                 if (documentSnapshot.exists) {
                     console.log('User Data: ', documentSnapshot.data());
                     userProfilePic = documentSnapshot.data().ProfilePhotoUri;
+                    userName = documentSnapshot.data().Name;
                 }
             })
     }

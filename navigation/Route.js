@@ -9,6 +9,7 @@ import BottomTab from './BottomTabNavigation';
 import ChatScreen from '../src/screens/ChatScreen';
 import EditProfileScreen from '../src/screens/EditProfile';
 import PersonProfileScreen from '../src/screens/PersonProfile';
+import MatchedProfileScreen from '../src/screens/MatchedProfileScreen';
 
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
@@ -38,7 +39,7 @@ function AppStack() {
                 <Stack.Screen name="Bottom Tab" component={BottomTab}
                     options={
                         ({ route }) => ({
-                            headerShown: getHeaderTitle(route) == 'Profile' ? false : true,
+                            headerShown: getHeaderTitle(route) == "Chats" ? true : false,
                             headerTitle: getHeaderTitle(route),
                             headerLeft: () => null,
                         })
@@ -82,6 +83,22 @@ function AppStack() {
                     options={{
                         headerShown: false
                     }} />
+                <Stack.Screen name="Matched Profiles" component={MatchedProfileScreen}
+                    options={({ navigation, route }) => ({
+                        headerShown: false,
+                        title: "Matches",
+                        headerLeft: () => (
+                            <HeaderBackButton
+                                onPress={() => {
+                                    navigation.navigate('Bottom Tab', {
+                                        screen: 'Match'
+                                    });
+                                    console.log("Go back to Match Screen")
+                                }
+                                }
+                            />
+                        )
+                    })} />
             </Stack.Navigator>
         </NavigationContainer>
     )

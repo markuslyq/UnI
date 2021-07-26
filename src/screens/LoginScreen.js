@@ -182,13 +182,13 @@ const styles = StyleSheet.create({
     },
     logInText: {
         marginTop: 50,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 40
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -199,12 +199,12 @@ const styles = StyleSheet.create({
     },
     errorMsg: {
         marginRight: 125,
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 12,
         color: 'red',
     },
     forgetPassword: {
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontSize: 14,
         position: 'relative',
         marginLeft: 200,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     logInButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

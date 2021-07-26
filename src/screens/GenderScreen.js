@@ -10,6 +10,8 @@ import * as Database from "../../api/firestore";
 
 const GenderScreen = ({ navigation }) => {
 
+    console.log("At Gender Screen");
+
     const [isMaleChecked, setIsMaleChecked] = useState(false);
     const [isFemaleChecked, setIsFemaleChecked] = useState(false);
     const [isGenderChecked, setIsGenderChecked] = useState(false);
@@ -150,14 +152,14 @@ const styles = StyleSheet.create({
     },
     headerText: {
         marginTop: 0,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 30,
         marginBottom: 30
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     continueButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

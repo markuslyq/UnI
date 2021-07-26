@@ -57,7 +57,7 @@ const CustomDatePicker = (props) => {
             onPress={() => setShow(true)}>
             <View>
                 <View style={textStyle}>
-                    <Text style={{fontFamily: 'Avenir'}} >{date.format('Do MMMM YYYY')}</Text>
+                    <Text style={{fontFamily: 'SFPro'}} >{date.format('Do MMMM YYYY')}</Text>
                     <FontAwesome name="calendar" size={20} color="black" style={{marginLeft: 125}}/>
                 </View>
                 

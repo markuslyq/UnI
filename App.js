@@ -29,7 +29,8 @@ export default function App() {
     MontserratSemiBold: require('./assets/fonts/Montserrat/Montserrat-SemiBold.ttf'),
     SFPro: require('./assets/fonts/SFPro/SFPro-Regular.ttf'),
     SFProMedium: require('./assets/fonts/SFPro/SFPro-Medium.ttf'),
-    SFProBold: require('./assets/fonts/SFPro/SFPro-Bold.ttf')
+    SFProBold: require('./assets/fonts/SFPro/SFPro-Bold.ttf'),
+    GothamRoundedMedium: require('./assets/fonts/gotham-rounded/GothamRoundedMedium_21022.ttf')
   });
 
   if (!loaded) {

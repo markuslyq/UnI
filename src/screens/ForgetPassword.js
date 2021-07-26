@@ -4,29 +4,35 @@ import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, Touc
 
 import { Button, TextInput } from 'react-native-paper';
 import BackBtn from '../components/BackBtn';
-import CustomPicker from '../components/CustomPicker';
+import CustomDatePicker from '../components/CustomDatePicker';
+
+import moment from 'moment';
 
 import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 
-const YearPromptScreen = ({ navigation }) => {
+const ForgetPasswordScreen = ({ navigation }) => {
 
-    const YearList = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7']
+    console.log("@Forget Password Screen")
 
-    const [year, setYear] = useState(1);
+    const [email, setEmail] = React.useState('');
+    const [data, setData] = React.useState({
+        isValidEmail: true,
+    });
 
-    const user = Authentication.auth.currentUser;
-    let email = user.email;
-
-    const docData = {
-        Year: year
+    const handleValidEmail = (val) => {
+        if (val.toString().slice(-10) != '@u.nus.edu') {
+            setData({
+                isValidEmail: false
+            });
+        } else {
+            setData({
+                isValidEmail: true
+            });
+        }
     }
 
     const continuePress = () => {
-        Database.add(email, "Information", docData, true);
-        Database.add("Users", email, docData, true);
-        navigation.navigate('CCAs');
-        console.log("Go to CCAs Screen");
     }
 
     return (
@@ -43,39 +49,30 @@ const YearPromptScreen = ({ navigation }) => {
 
                     <View style={styles.bottomContainer}>
                         {/* Description */}
-                        <Text style={styles.headerText}>I am in </Text>
+                        <Text style={styles.headerText}>Forget Password?</Text>
+                        <Text style={styles.descriptionText}>Sign up to get started!</Text>
                     </View>
 
                 </View>
 
 
+
                 <View style={styles.inputContainer}>
 
-                    <CustomPicker
-                        textStyle={{
-                            flexDirection: 'row',
-                            borderRadius: 10,
-                            alignItems: 'center',
-                            justifyContent: 'flex-start',
-                            paddingHorizontal: 80,
-                            paddingVertical: 12,
-                            borderColor: '#949494',
-                            borderWidth: 1
-                        }}
-                        defaultItem={YearList[0]}
-                        items={YearList}
-                        onItemChange={(Year) => {
-                            console.log('Year:  ' + Year);
-                            if (Year == 'Year 1') setYear(1);
-                            else if (Year == 'Year 2') setYear(2);
-                            else if (Year == 'Year 3') setYear(3);
-                            else if (Year == 'Year 4') setYear(4);
-                            else if (Year == 'Year 5') setYear(5);
-                            else if (Year == 'Year 6') setYear(6);
-                            else if (Year == 'Year 7') setYear(7);
-                            else setYear(0);
-                        }}
-                    />
+                    <TextInput
+                        style={styles.input}
+                        mode="outlined"
+                        theme={{ colors: { primary: '#FD9E0F', underlineColor: 'transparent', } }}
+                        label="Email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChangeText={email => setEmail(email.toLocaleLowerCase())}
+                        onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)} />
+                    {data.isValidEmail ? null :
+                        <Animated.View animation="fadeInLeft" duration={500}>
+                            <Text style={styles.errorMsg}>Please enter a valid NUS email.</Text>
+                        </Animated.View>
+                    }
 
                     {/* Continue Button */}
                     <Button style={styles.continueButton}
@@ -111,7 +108,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        marginHorizontal: 28
     },
     uniLogo: {
         marginTop: -70,
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         marginTop: 0,
-        fontFamily: 'GothamRoundedMedium',
+        fontFamily: 'SFPro',
         fontWeight: 'bold',
         fontSize: 30,
         marginBottom: 30
@@ -162,4 +158,4 @@ const styles = StyleSheet.create({
         fontWeight: 'normal'
     }
 })
-export default YearPromptScreen;
+export default ForgetPasswordScreen;

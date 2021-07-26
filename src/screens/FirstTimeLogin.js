@@ -8,6 +8,8 @@ import * as Authentication from "../../api/auth";
 
 const FirstTimeLoginScreen = ({ navigation }) => {
 
+    console.log("At First Time Login Screen");
+
     const user = Authentication.auth.currentUser;
     let name = '';
     
@@ -71,13 +73,13 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginTop: 50,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 34
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     continueButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

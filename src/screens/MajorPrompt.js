@@ -51,7 +51,7 @@ const MajorScreen = ({ navigation }) => {
         'Science (Food Science & Technology)'
     ];
 
-    const [major, setMajor] = useState('');
+    const [major, setMajor] = useState('Architecture');
 
     const user = Authentication.auth.currentUser;
     let email = user.email;
@@ -151,14 +151,14 @@ const styles = StyleSheet.create({
     },
     headerText: {
         marginTop: 0,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 30,
         marginBottom: 30
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     continueButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

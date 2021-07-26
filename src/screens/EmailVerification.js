@@ -8,15 +8,6 @@ import * as Authentication from "../../api/auth";
 
 const EmailVerificationScreen = ({ route, navigation }) => {
 
-    // const sendEmailVerification = () => {
-    //     const { user } = route.params;
-
-    //     Authentication.sendEmailVerification(
-    //         user,
-    //         (user) => {Alert.alert("Sent")},
-    //         () => {Alert.alert("Error")})
-    // }
-
     const logInPress = () => {
         navigation.navigate('Login')
     }
@@ -81,7 +72,7 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginTop: 0,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 30,
         textAlign: 'center',
@@ -89,7 +80,7 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -104,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     signInButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         height: 30
     },
     backText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18
     }
 })

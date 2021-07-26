@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginTop: 50,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 40
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     signUpButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

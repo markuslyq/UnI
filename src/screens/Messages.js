@@ -90,8 +90,19 @@ const MessagesScreen = ({ navigation, route }) => {
     })
   }, []);
 
+  if(Messages.length == 0){
+    return(
+      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      
+        <Text style={{
+          fontSize: 16,
+          fontFamily: "SFPro"
+        }}>You do not have any messages!</Text>
+      </SafeAreaView>
+    )
+  }
   return (
-    <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1, }}>
       <ScrollView refreshControl={
         <RefreshControl
           refreshing={refreshing}

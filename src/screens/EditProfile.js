@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, Alert, TouchableOpacity, ScrollView, Dimensions, RefreshControl, ImageBackground, KeyboardAvoidingView } from 'react-native';
 
 import { Button, Appbar, Avatar, Card, Chip, Badge, TextInput } from 'react-native-paper';
-import Animated from 'react-native-reanimated';
+import Animated, { set } from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -50,7 +50,7 @@ const EditProfileScreen = ({ navigation, route }) => {
     let letters = /^[A-Za-z]+$/;
 
     const handleValidName = (val) => {
-        if ((val.toString().trim() === '') || !((val.toString().match(letters)))) {
+        if ((val.toString().trim() === '') || !((val.toString().replace(/\s+/g, '').match(letters)))) {
             setData({
                 ...data,
                 isValidName: false
@@ -655,7 +655,6 @@ const EditProfileScreen = ({ navigation, route }) => {
     const [selectedInterests, setSelectedInterests] = useState(document.Interest);
 
     const [image, setImage] = useState(null);
-    // const [imgUri, setImgUri] = useState(null);
 
     const renderInner = () => (
         <View style={styles.panel}>
@@ -699,7 +698,10 @@ const EditProfileScreen = ({ navigation, route }) => {
         </View>
     );
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const uploadImage = async (uri) => {
+        setIsLoading(true);
         if (image == null) {
             return null;
         }
@@ -711,29 +713,11 @@ const EditProfileScreen = ({ navigation, route }) => {
         const name = filename.split('.').slice(0, -1).join('.');
         filename = name + Date.now() + '.' + extension;
 
-        // setUploading(true);
-        // setTransferred(0);
-        let metadata = {
-            contentType: 'image/jpg',
-        };
-
         const response = await fetch(uri);
         const blob = await response.blob();
 
         const storageRef = firebase.storage().ref(`ProfilePhotos/${filename}`);
         const task = storageRef.put(blob);
-
-        // Set transferred state
-        // task.on('state_changed', (taskSnapshot) => {
-        //   console.log(
-        //     `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-        //   );
-
-        //   setTransferred(
-        //     Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-        //       100,
-        //   );
-        // });
 
         try {
             await task;
@@ -800,7 +784,6 @@ const EditProfileScreen = ({ navigation, route }) => {
                 renderHeader={renderHeader}
                 initialSnap={1}
                 enabledGestureInteraction={true}
-            // enabledContentGestureInteraction={true}
             />
 
             <Appbar.Header style={styles.appBarHeader}>
@@ -813,7 +796,11 @@ const EditProfileScreen = ({ navigation, route }) => {
                     });
                 }} />
                 <Appbar.Content title="Edit Profile" titleStyle={styles.headerText} />
-                <Appbar.Action
+                {
+                    isLoading?
+                    <Image style={{height: 20, width: 20, marginRight: 12, marginLeft: 16}} source={{uri: 'https://i.gifer.com/ZZ5H.gif'}}/>
+                    :
+                    <Appbar.Action
                     icon="check"
                     color="#000000"
                     onPress={async () => {
@@ -822,7 +809,7 @@ const EditProfileScreen = ({ navigation, route }) => {
                         if (Uri == null ){
                             Uri = document.ProfilePhotoUri;
                         }
-                        
+
                         console.log(Uri);
 
                         const docData = {
@@ -836,10 +823,6 @@ const EditProfileScreen = ({ navigation, route }) => {
                             Year: year,
                             ProfilePhotoUri: Uri
                         }
-
-                        // if (imgUri == null ) {
-                        //     setImgUri(document.ProfilePhotoUri);
-                        // }
 
                         console.log("Name: ", name);
                         console.log('Edited Gender: ' + gender);
@@ -857,9 +840,14 @@ const EditProfileScreen = ({ navigation, route }) => {
                         //     params: {document: doc.data()},
                         // });
                         Database.add(email, "Information", docData, true);
+                        Database.add("Users", email, docData, true);
+                        setIsLoading(false);
                         Alert.alert("Profile updated", "Your profile has been updated!");
                     }}
                 />
+                }
+                
+                
             </Appbar.Header>
 
             <ScrollView refreshControl={
@@ -1157,8 +1145,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     container: {
-        borderTopEndRadius: 30,
-        borderTopStartRadius: 30,
+        borderRadius: 30,
         marginTop: 30,
         backgroundColor: '#FFFFFF',
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0

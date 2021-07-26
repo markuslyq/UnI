@@ -30,7 +30,7 @@ const SignUpScreen = ({ navigation }) => {
     let letters = /^[A-Za-z]+$/;
 
     const handleValidName = (val) => {
-        if ((val.toString().trim() === '') || !((val.toString().match(letters)))) {
+        if ((val.toString().trim() === '') || !((val.toString().replace(/\s+/g, '').match(letters)))) {
             setData({
                 ...data,
                 isValidName: false
@@ -106,41 +106,41 @@ const SignUpScreen = ({ navigation }) => {
                     Database.add(email, "Information", docData, false);
                     Database.add("Users", email, docData, false);
 
-                    const mymsg = {
-                        _id: '0000',
-                        createdAt: new Date(),
-                        sentBy: '0',
-                        sentTo: user.uid,
-                        text: "Hey there, welcome to U&I!",
-                        user: {
-                            _id: '0',
-                            name: 'Admin'
-                        }
-                    }
+                    // const mymsg = {
+                    //     _id: '0000',
+                    //     createdAt: new Date(),
+                    //     sentBy: '0',
+                    //     sentTo: user.uid,
+                    //     text: "Hey there, welcome to U&I!",
+                    //     user: {
+                    //         _id: '0',
+                    //         name: 'Admin'
+                    //     }
+                    // }
                     Database.db.collection(email)
                         .doc('Chats')
                         .set(dummy, { merge: true })
 
-                    Database.db.collection(email)
-                        .doc('Chats')
-                        .collection('admin@uni.com')
-                        .add(mymsg)
+                    // Database.db.collection(email)
+                    //     .doc('Chats')
+                    //     .collection('admin@uni.com')
+                    //     .add(mymsg)
 
-                    const adminLatest = {
-                        messengerID: '0',
-                        messengerEmail: 'admin@uni.com',
-                        messengerName: 'Admin',
-                        latestMsg: "Hey there, welcome to U&I!",
-                        Time: new Date(),
-                        sentBy: 'admin@uni.com',
-                        sentTo: email
-                    }
+                    // const adminLatest = {
+                    //     messengerID: '0',
+                    //     messengerEmail: 'admin@uni.com',
+                    //     messengerName: 'Admin',
+                    //     latestMsg: "Hey there, welcome to U&I!",
+                    //     Time: new Date(),
+                    //     sentBy: 'admin@uni.com',
+                    //     sentTo: email
+                    // } 
 
-                    Database.db.collection(email)
-                        .doc('Chats')
-                        .collection('Chatlists')
-                        .doc('admin@uni.com')
-                        .set(adminLatest)
+                    // Database.db.collection(email)
+                    //     .doc('Chats')
+                    //     .collection('Chatlists')
+                    //     .doc('admin@uni.com')
+                    //     .set(adminLatest)
 
                     navigation.navigate('Email Verification');
                     console.log("Go to Email Verification Screen");
@@ -312,13 +312,13 @@ const styles = StyleSheet.create({
     },
     signUpText: {
         marginTop: 50,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 30
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     },
     errorMsg: {
         marginRight: 125,
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 12,
         color: 'red',
     },
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     signUpButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

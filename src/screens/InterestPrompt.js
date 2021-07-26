@@ -182,6 +182,7 @@ const InterestPromptScreen = ({ navigation, route }) => {
 
     const continuePress = async () => {
         Database.add("Users", email, docData, true);
+        Database.add(email, "Information", docData, true);
         const doc = await Database.db.collection(email).doc("Information").get();
         console.log(doc.data());
         navigation.navigate('Bottom Tab', {
@@ -222,6 +223,9 @@ const InterestPromptScreen = ({ navigation, route }) => {
                             console.log(selected);
                             Database.add(email, "Information", docData, true);
                         }}
+                        onClearSelector={()=>{
+                            Database.add(email, "Information", docData, true);
+                        }}
                         selectedItems={selectedItems}
                         selectText="Select your interest(s)"
                         searchInputPlaceholderText="Search Items..."
@@ -247,6 +251,7 @@ const InterestPromptScreen = ({ navigation, route }) => {
                     mode="contained"
                     color="#FD9E0F"
                     uppercase={false}
+                    disabled={interests.length == 0 ? true : false}
                     onPress={continuePress}>
                     Continue
                 </Button>
@@ -282,14 +287,14 @@ const styles = StyleSheet.create({
     },
     headerText: {
         marginTop: 0,
-        fontFamily: 'Avenir',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 30,
         marginBottom: 30
     },
     descriptionText: {
         textAlign: 'center',
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 16,
         color: '#858585',
         lineHeight: 23
@@ -318,7 +323,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     continueButtonText: {
-        fontFamily: 'Avenir',
+        fontFamily: 'SFPro',
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'

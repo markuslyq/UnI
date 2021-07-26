@@ -188,8 +188,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     container: {
-        borderTopEndRadius: 30,
-        borderTopStartRadius: 30,
+        borderRadius: 30,
         marginTop: 50,
         backgroundColor: '#FFFFFF',
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
