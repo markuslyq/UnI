@@ -13,6 +13,8 @@ import MajorScreen from '../src/screens/MajorPrompt';
 import YearPromptScreen from '../src/screens/YearPrompt';
 import CCAPromptScreen from '../src/screens/CCAPrompt';
 import InterestPromptScreen from '../src/screens/InterestPrompt';
+import ForgetPasswordScreen from '../src/screens/ForgetPassword';
+import PasswordResetScreen from '../src/screens/PasswordReset';
 import BottomTab from './BottomTabNavigation';
 
 const Stack = createStackNavigator();
@@ -34,6 +36,8 @@ function RegNavigator() {
             <Stack.Screen name="Year" component={YearPromptScreen} options={{ headerShown: false}}/>
             <Stack.Screen name="CCAs" component={CCAPromptScreen} options={{ headerShown: false}}/>
             <Stack.Screen name="Interests" component={InterestPromptScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Forget Password" component={ForgetPasswordScreen} options={{ headerShown: false}}/>
+            <Stack.Screen name="Password Reset" component={PasswordResetScreen} options={{ headerShown: false}}/>
             {/* <Stack.Screen name="Bottom Tab" component={BottomTab} /> */}
         </Stack.Navigator>
     )

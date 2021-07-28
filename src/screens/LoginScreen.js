@@ -10,7 +10,7 @@ import * as Authentication from "../../api/auth";
 import * as Database from "../../api/firestore";
 import User from '../../User';
 
-const LoginScreen = ({ navigation, route}) => {
+const LoginScreen = ({ navigation, route }) => {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation, route}) => {
                     } else {
                         navigation.navigate('Bottom Tab', {
                             screen: 'Profile',
-                            params: {document: doc.data()},
+                            params: { document: doc.data() },
                         });
                         console.log("Go to Profile Screen");
                     }
@@ -131,7 +131,12 @@ const LoginScreen = ({ navigation, route}) => {
                                 secureTextEntry={!isPasswordVisible}
                                 value={password}
                                 onChangeText={password => setPassword(password)} />
-                            <Text style={styles.forgetPassword}>Forget Password?</Text>
+                            <Text
+                                style={styles.forgetPassword}
+                                onPress={() => {
+                                    navigation.navigate('Registration', { screen: 'Forget Password' });
+                                    console.log("Go to Forget Password Screen");
+                                }}>Forget Password?</Text>
 
                             {/* Login Button */}
                             <Button style={styles.logInButton}

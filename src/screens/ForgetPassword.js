@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, Platform, TouchableHighlight, Animated, Alert } from 'react-native';
 
 import { Button, TextInput } from 'react-native-paper';
 import BackBtn from '../components/BackBtn';
@@ -33,6 +33,19 @@ const ForgetPasswordScreen = ({ navigation }) => {
     }
 
     const continuePress = () => {
+        Authentication.auth.sendPasswordResetEmail(email)
+            .then(() => {
+                console.log("Password Reset Email Sent!");
+                console.log("Go to password reset screen");
+                navigation.navigate('Password Reset');
+            }).catch((error) => {
+                if (!data.isValidEmail) {
+                    Alert.alert("Login Error", "Please key in a valid email address.");
+                } else {
+                    console.log(email, ": ", error);
+                    Alert.alert("User does not exists", "Please check if you entered the correct email.");
+                }
+            })
     }
 
     return (
@@ -50,7 +63,7 @@ const ForgetPasswordScreen = ({ navigation }) => {
                     <View style={styles.bottomContainer}>
                         {/* Description */}
                         <Text style={styles.headerText}>Forget Password?</Text>
-                        <Text style={styles.descriptionText}>Sign up to get started!</Text>
+                        <Text style={styles.descriptionText}>Provide the email you registered with and{"\n"}we'll send you a link to reset your password.</Text>
                     </View>
 
                 </View>
@@ -80,6 +93,7 @@ const ForgetPasswordScreen = ({ navigation }) => {
                         mode="contained"
                         color="#FD9E0F"
                         uppercase={false}
+                        disabled={!data.isValidEmail}
                         onPress={continuePress}>
                         Continue
                     </Button>
@@ -116,10 +130,10 @@ const styles = StyleSheet.create({
     },
     headerText: {
         marginTop: 0,
-        fontFamily: 'SFPro',
+        fontFamily: 'GothamRoundedMedium',
         fontWeight: 'bold',
         fontSize: 30,
-        marginBottom: 30
+        marginBottom: 5
     },
     descriptionText: {
         textAlign: 'center',
@@ -138,9 +152,9 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     input: {
-        width: 320,
+        width: 300,
         height: 50,
-        paddingTop: 0,
+        paddingTop: 30,
     },
     continueButton: {
         borderRadius: 20,
@@ -156,6 +170,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#5C5C5C',
         fontWeight: 'normal'
-    }
+    },
+    errorMsg: {
+        marginRight: 125,
+        fontFamily: 'SFPro',
+        fontSize: 12,
+        color: 'red',
+    },
 })
 export default ForgetPasswordScreen;
