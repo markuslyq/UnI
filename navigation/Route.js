@@ -70,7 +70,7 @@ function AppStack() {
                                 }}>
                                 <Avatar.Image
                                     size={35}
-                                    style={{ marginRight: 10 }}
+                                    style={{ marginRight: 10, marginBottom: 5 }}
                                     source={route.params.profilePhotoUri} />
                             </TouchableOpacity>
                         )

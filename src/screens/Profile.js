@@ -144,11 +144,11 @@ const ProfileScreen = ({ navigation, route }) => {
 
                 <View style={styles.profileDP}>
                     <Avatar.Image
-                        size={70}
+                        size={80}
                         source={{ uri: document.ProfilePhotoUri }}
                         style={{
-                            marginLeft: 40,
-                            marginRight: 20
+                            marginLeft: 50,
+                            marginRight: 15
                         }} />
                     <View style={styles.profileDisplay}>
                         <Text style={styles.helloNameText}>Hello</Text>
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     },
     container: {
         borderRadius: 30,
-        marginTop: 50,
+        marginTop: 30,
         backgroundColor: '#FFFFFF',
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
@@ -275,13 +275,13 @@ const styles = StyleSheet.create({
     profileName: {
         marginTop: 0,
         fontFamily: 'Montserrat',
-        fontSize: 24,
+        fontSize: 26,
         color: '#2e2e2e'
     },
     helloNameText: {
-        marginTop: 10,
+        marginTop: 16,
         fontFamily: 'MontserratExtraLight',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: '400',
         color: '#2e2e2e'
     },
