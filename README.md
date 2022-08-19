@@ -4,6 +4,4 @@ With the recent Covid-19 Pandemic, most of university school life has been shift
 
 However, that is only a problem if we stick to the traditional way of making friends. What if we were to digitise the means of meeting new people in NUS and allow making friends to be done remotely as well?
 
-As such, we created a platform where staff and students of NUS are able to connect with one another and expand their network, be it to discuss homework, find project groupmates or simply to make friends across the university.  
-
-
+As such, we created a mobile platform where staff and students of NUS are able to connect with one another and expand their network, be it to discuss homework, find project groupmates or simply to make friends across the university.
