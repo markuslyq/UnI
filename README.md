@@ -49,3 +49,14 @@ Our application would require the user to sign-up and register an account with a
 <img width="25%" src="https://user-images.githubusercontent.com/69578193/185616103-e1e2110b-d5e7-4c94-b676-823d06bc7f0b.png" />
 </p>
 
+### Getting Started
+1. Download this repo as a zip file and unzip it into desired location.
+2. Install `expo`. (Click [here](https://docs.expo.dev/get-started/installation/) for the installation instructions)
+3. Direct to the location of the file on your terminal and run `npm install` or `yarn install`.
+4. Once done, run `expo start -c`.
+5. Either run in on your desired emulator (IOS/Android) or scan the QR code with the phone of your choice to run it locally on the phone. 
+
+### Thanks
+As we are still in the prototyping phase, more features may be added in the future! Do let us know if you have any suggestions in the issues tab.  
+We hope to someday be able to deploy the app and allow university students to have a more fulfilling experience in school!
+
