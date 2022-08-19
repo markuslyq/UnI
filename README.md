@@ -57,6 +57,7 @@ Our application would require the user to sign-up and register an account with a
 5. Either run in on your desired emulator (IOS/Android) or scan the QR code with the phone of your choice to run it locally on the phone. 
 
 ### Thanks
-As we are still in the prototyping phase, more features may be added in the future! Do let us know if you have any suggestions in the issues tab.  
-We hope to someday be able to deploy the app and allow university students to have a more fulfilling experience in school!
+As we are still in the prototyping phase, more features may be added in the future!  
+Do let us know if you have any suggestions in the issues tab.  
 
+We hope to someday be able to deploy the app and allow university students to have a more fulfilling experience in school despite the COVID-19 restrictions!
